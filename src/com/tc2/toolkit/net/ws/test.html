@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+var socket = new WebSocket('ws://localhost:7788/ssssss');
+socket.binaryType='arraybuffer';
+
+socket.onopen = function(event) {
+  socket.send('22222222222');
+  socket.send('我是试试');
+  socket.send('黑诶');
+  socket.send(new Uint8Array(3));
+
+  var array=new Uint8Array(500000);
+  array[0]=1;
+  array[1]=2;
+  array[3]=2;
+  socket.send(array);
+
+  socket.onmessage = function(event) {
+    console.log('onmessage',new Uint8Array(event.data));
+  };
+
+  socket.onclose = function(event) {
+    console.log('onclose', event);
+  };
+
+  socket.close();
+  }
+
+
+</script>
+</body>
+</html>

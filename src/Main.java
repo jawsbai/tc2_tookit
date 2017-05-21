@@ -1,15 +1,15 @@
 import com.tc2.database.Database;
 import com.tc2.database.TableName;
+import com.tc2.database.expr.EQS;
 import com.tc2.database.expr.INSERT;
-import com.tc2.database.expr.FieldExpressions;
 import com.tc2.database.fields.INT;
 import com.tc2.database.fields.VARCHAR;
 import com.tc2.toolkit.net.ws.WebSocket;
 import com.tc2.toolkit.print.Console;
 import com.tc2.toolkit.promise.Promise;
 import com.tc2.toolkit.thread.ActiveObject;
-import galaxy.CONST;
-import galaxy.tables.TableHero;
+import com.tc2.galaxy.CONST;
+import com.tc2.galaxy.tables.TableHero;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -50,11 +50,10 @@ public class Main {
                 table1, field1.EQ(1), field2.EQ("00000000")));
 
         Console.log(db.formatSQL("set @0",
-                new FieldExpressions(field1.EQ(1), field2.EQ("00000000"))));
+                new EQS(field1.EQ(1), field2.EQ("00000000"))));
 
-        Console.log(db.formatSQL("insert @0 @1",
-                table1,
-                new INSERT(field1.value(1), field2.value("00000000"))));
+        Console.log(db.formatSQL("@0",
+                new INSERT(table1, field1.value(1), field2.value("00000000"))));
     }
 
     public static void socketTest() {

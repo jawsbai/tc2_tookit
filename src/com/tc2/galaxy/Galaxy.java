@@ -1,4 +1,4 @@
-package galaxy;
+package com.tc2.galaxy;
 
 public class Galaxy {
 

@@ -5,10 +5,12 @@ import com.tc2.database.FieldValue;
 import com.tc2.database.TableName;
 import com.tc2.toolkit.utils.StringBuilderHelper;
 
-public class INSERT extends Expression {
+public class INSERT implements Expression {
+    public final TableName tableName;
     public final FieldValue[] values;
 
-    public INSERT(FieldValue... values) {
+    public INSERT(TableName tableName, FieldValue... values) {
+        this.tableName = tableName;
         this.values = values;
     }
 
@@ -24,6 +26,6 @@ public class INSERT extends Expression {
         }
         StringBuilderHelper.removeLast(sb1, 2);
         StringBuilderHelper.removeLast(sb2, 2);
-        return "(" + sb1 + ") values(" + sb2 + ")";
+        return "insert into `" + tableName.name + "`(" + sb1 + ") values(" + sb2 + ")";
     }
 }

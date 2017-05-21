@@ -1,7 +1,6 @@
 package com.tc2.database;
 
 import com.tc2.database.expr.Expression;
-import com.tc2.toolkit.print.Console;
 import com.tc2.toolkit.utils.AutoCloseableHelper;
 
 import java.sql.*;

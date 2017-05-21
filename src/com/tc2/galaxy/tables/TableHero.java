@@ -1,4 +1,4 @@
-package galaxy.tables;
+package com.tc2.galaxy.tables;
 
 import com.tc2.database.*;
 import com.tc2.database.fields.INT;

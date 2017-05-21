@@ -1,4 +1,4 @@
-package galaxy;
+package com.tc2.galaxy;
 
 public class CONST {
     public final static String DB_CONN_STR = "jdbc:mysql://localhost:3306/tc2_test?" +

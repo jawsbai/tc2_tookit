@@ -1,8 +1,9 @@
 package com.tc2.database;
 
-import com.tc2.database.expr.EQ;
+import com.tc2.database.expr.EQS;
 import com.tc2.database.expr.INSERT;
-import com.tc2.database.expr.FieldExpressions;
+import com.tc2.database.expr.UPDATE;
+import com.tc2.database.expr.WHERE;
 import com.tc2.toolkit.print.Console;
 
 import java.sql.SQLException;
@@ -24,18 +25,18 @@ public class Table {
 
     public final boolean insert(FieldValue... values) {
         try {
-            return database.executeUpdate("insert into @0@1",
-                    tableDefined.tableName, new INSERT(values)) == 1;
+            return database.executeUpdate("@0", new INSERT(tableDefined.tableName, values)) == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public final boolean update(EQ... eqs) {
+    public final boolean update(EQS eqs, WHERE where) {
         try {
-            return database.executeUpdate("update set @0 @1 where ",
-                    tableDefined.tableName, new FieldExpressions(eqs)) == 1;
+            return database.executeUpdate("@0 @1",
+                    new UPDATE(tableDefined.tableName, eqs),
+                    where) > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

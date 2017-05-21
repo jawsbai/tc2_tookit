@@ -1,16 +1,60 @@
-package com.tc2.toolkit;
-
+import com.tc2.database.Database;
+import com.tc2.database.TableName;
+import com.tc2.database.expr.INSERT;
+import com.tc2.database.expr.FieldExpressions;
+import com.tc2.database.fields.INT;
+import com.tc2.database.fields.VARCHAR;
 import com.tc2.toolkit.net.ws.WebSocket;
 import com.tc2.toolkit.print.Console;
 import com.tc2.toolkit.promise.Promise;
-import com.tc2.toolkit.net.socket.SocketServer;
 import com.tc2.toolkit.thread.ActiveObject;
+import galaxy.CONST;
+import galaxy.tables.TableHero;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
-        socketTest();
+        galaxyTableTest();
+    }
+
+    public static void galaxyTableTest() {
+        Database db = new Database();
+        try {
+            db.connect(CONST.DB_CONN_STR);
+
+            TableHero tableHero = new TableHero(db);
+            tableHero.createTable();
+
+            boolean inserted = tableHero.insert(
+                    TableHero.HERO_ID.value(1),
+                    TableHero.USER_ID.value("user1"),
+                    TableHero.HERO_NAME.value("22222"),
+                    TableHero.CREATE_TIME.value("11111"));
+            Console.log(inserted);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void databaseTest() {
+
+        TableName table1 = new TableName("table1");
+        INT field1 = new INT("field1");
+        VARCHAR field2 = new VARCHAR("field2", 10);
+
+        Database db = new Database();
+        Console.log(db.formatSQL("select * from @0 where @1 and @2",
+                table1, field1.EQ(1), field2.EQ("00000000")));
+
+        Console.log(db.formatSQL("set @0",
+                new FieldExpressions(field1.EQ(1), field2.EQ("00000000"))));
+
+        Console.log(db.formatSQL("insert @0 @1",
+                table1,
+                new INSERT(field1.value(1), field2.value("00000000"))));
     }
 
     public static void socketTest() {

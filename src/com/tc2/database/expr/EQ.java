@@ -2,11 +2,14 @@ package com.tc2.database.expr;
 
 import com.tc2.database.Database;
 import com.tc2.database.FieldDefined;
-import com.tc2.database.FieldValue;
 
-public class EQ extends FieldValue implements Expression {
+public class EQ implements Expression {
+    public final FieldDefined defined;
+    public final Object value;
+
     public EQ(FieldDefined defined, Object value) {
-        super(defined, value);
+        this.defined = defined;
+        this.value = value;
     }
 
     @Override

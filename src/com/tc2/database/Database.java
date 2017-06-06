@@ -39,6 +39,8 @@ public class Database {
     private String formatValue(Object value) {
         if (value instanceof TableName) {
             return "`" + ((TableName) value).name + "`";
+        } else if (value instanceof FieldDefined) {
+            return "`" + ((FieldDefined) value).name + "`";
         } else if (value instanceof Expression) {
             return ((Expression) value).toSQL();
         }
@@ -71,110 +73,4 @@ public class Database {
     public ResultSet executeQuery(String sql, Object... values) throws SQLException {
         return _stmt.executeQuery(formatSQL(sql, values));
     }
-//
-//    public boolean exists(String sql, Object... args) {
-//        boolean find = false;
-//        ResultSet rs = null;
-//        try {
-//            rs = executeQuery(sql, args);
-//            find = rs.next();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return find;
-//    }
-//
-//    public int count(String sql, Object... args) {
-//        int count = 0;
-//        ResultSet rs = null;
-//        try {
-//            rs = executeQuery(sql, args);
-//            if (rs.next()) {
-//                count = rs.getInt(1);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return count;
-//    }
-//
-//    public <T> T getJson(Class<T> t, String sql, Object... args) {
-//        T find = null;
-//        ResultSet rs = null;
-//        try {
-//            rs = executeQuery(sql, args);
-//            if (rs.next()) {
-//                find = JSONUtil.parse(t, rs.getString("json"));
-//
-//                if (find != null) {
-//                    try {
-//                        Field id = find.getClass().getField("id");
-//                        id.set(find, rs.getInt("id"));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return find;
-//    }
-//
-//    public <T> ArrayList<T> getJsonArray(Class<T> t, String sql, Object... args) {
-//        ArrayList<T> list = new ArrayList<>();
-//        ResultSet rs = null;
-//        try {
-//            rs = executeQuery(sql, args);
-//            while (rs.next()) {
-//                T find = JSONUtil.parse(t, rs.getString("json"));
-//                if (find == null) {
-//                    Console.log(sql, "getJsonArray find=null");
-//                } else {
-//                    try {
-//                        Field id = find.getClass().getField("id");
-//                        id.set(find, rs.getInt("id"));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                list.add(find);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return list;
-//    }
 }

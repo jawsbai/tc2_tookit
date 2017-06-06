@@ -2,6 +2,9 @@ package com.tc2.database.fields;
 
 import com.tc2.database.FieldDefined;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class INT extends FieldDefined<Integer> {
     public final int len;
     public final boolean unsigned;
@@ -30,6 +33,16 @@ public class INT extends FieldDefined<Integer> {
                 (unsigned ? " UNSIGNED" : "") +
                 (notNull ? " NOT NULL" : "") +
                 (autoIncrement ? " AUTO_INCREMENT" : "");
+    }
+
+    @Override
+    public Integer getRSValue(ResultSet rs) {
+        try {
+            return rs.getInt(name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @Override

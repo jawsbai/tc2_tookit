@@ -1,9 +1,7 @@
 import com.tc2.database.Database;
-import com.tc2.database.TableName;
-import com.tc2.database.expr.EQS;
-import com.tc2.database.expr.INSERT;
-import com.tc2.database.fields.INT;
-import com.tc2.database.fields.VARCHAR;
+import com.tc2.database.expr.EQ;
+import com.tc2.database.expr.ORDER_BY;
+import com.tc2.database.expr.WHERE;
 import com.tc2.toolkit.net.ws.WebSocket;
 import com.tc2.toolkit.print.Console;
 import com.tc2.toolkit.promise.Promise;
@@ -12,7 +10,9 @@ import com.tc2.galaxy.CONST;
 import com.tc2.galaxy.tables.TableHero;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,12 +27,32 @@ public class Main {
             TableHero tableHero = new TableHero(db);
             tableHero.createTable();
 
-            boolean inserted = tableHero.insert(
-                    TableHero.HERO_ID.value(1),
-                    TableHero.USER_ID.value("user1"),
-                    TableHero.HERO_NAME.value("22222"),
-                    TableHero.CREATE_TIME.value("11111"));
-            Console.log(inserted);
+            for (int i = 1; i < 6; i++) {
+                tableHero.insert(
+                        TableHero.FD_HERO_ID.eq(i),
+                        TableHero.FD_USER_ID.eq("user" + i),
+                        TableHero.FD_HERO_NAME.eq("name" + i),
+                        TableHero.FD_CREATE_TIME.eq("11111"));
+            }
+
+
+            Console.log(tableHero.delete(new WHERE(TableHero.FD_HERO_ID.eq(3))));
+            Console.log(tableHero.delete(new WHERE(TableHero.FD_HERO_ID.eq(2))));
+
+            Console.log(tableHero.exists(new WHERE(TableHero.FD_HERO_ID.eq(2))));
+            Console.log(tableHero.exists(new WHERE(TableHero.FD_HERO_ID.eq(1))));
+
+            Console.log(tableHero.count(new WHERE(TableHero.FD_HERO_ID.eq(1))
+                    .and(TableHero.FD_USER_ID.eq("user1"))));
+
+            tableHero.update(
+                    new EQ[]{TableHero.FD_HERO_NAME.eq("update")},
+                    new WHERE(TableHero.FD_HERO_ID.eq(1)));
+
+
+            tableHero.select(new WHERE(), new ORDER_BY(TableHero.FD_USER_ID, "desc"), 100, (ResultSet rs) -> {
+                Console.log(TableHero.FD_USER_ID.getRSValue(rs));
+            });
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,19 +61,19 @@ public class Main {
 
     public static void databaseTest() {
 
-        TableName table1 = new TableName("table1");
-        INT field1 = new INT("field1");
-        VARCHAR field2 = new VARCHAR("field2", 10);
-
-        Database db = new Database();
-        Console.log(db.formatSQL("select * from @0 where @1 and @2",
-                table1, field1.EQ(1), field2.EQ("00000000")));
-
-        Console.log(db.formatSQL("set @0",
-                new EQS(field1.EQ(1), field2.EQ("00000000"))));
-
-        Console.log(db.formatSQL("@0",
-                new INSERT(table1, field1.value(1), field2.value("00000000"))));
+//        TableName table1 = new TableName("table1");
+//        INT field1 = new INT("field1");
+//        VARCHAR field2 = new VARCHAR("field2", 10);
+//
+//        Database db = new Database();
+//        Console.log(db.formatSQL("select * from @0 where @1 and @2",
+//                table1, field1.eq(1), field2.eq("00000000")));
+//
+//        Console.log(db.formatSQL("set @0",
+//                new EQS(field1.eq(1), field2.eq("00000000"))));
+//
+//        Console.log(db.formatSQL("@0",
+//                new INSERT(table1, field1.eq(1), field2.eq("00000000"))));
     }
 
     public static void socketTest() {

@@ -2,13 +2,17 @@ package com.tc2.database;
 
 public class TableDefined {
     public final TableName tableName;
+    public final FieldDefined primaryKey;
     public final FieldDefined[] fields;
-    public final String primaryKey;
 
-    public TableDefined(TableName tableName, String primaryKey, FieldDefined... fields) {
+    public TableDefined(TableName tableName, FieldDefined primaryKey, FieldDefined... fields) {
         this.tableName = tableName;
-        this.fields = fields;
         this.primaryKey = primaryKey;
+        this.fields = new FieldDefined[fields.length + 1];
+        this.fields[0] = primaryKey;
+        for (int i = 0; i < fields.length; i++) {
+            this.fields[i + 1] = fields[i];
+        }
     }
 
     public String createSQL() {
@@ -18,7 +22,7 @@ public class TableDefined {
         }
         return "CREATE TABLE `" + tableName.name + "` (\n" +
                 sb +
-                "PRIMARY KEY (`" + primaryKey + "`)\n" +
+                "PRIMARY KEY (`" + primaryKey.name + "`)\n" +
                 ")\n" +
                 "ENGINE=InnoDB DEFAULT\n" +
                 "CHARSET=utf8\n" +

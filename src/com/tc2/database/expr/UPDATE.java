@@ -2,13 +2,15 @@ package com.tc2.database.expr;
 
 import com.tc2.database.TableName;
 
-public class UPDATE implements Expression {
-    public final TableName tableName;
-    public final EQS eqs;
+import java.lang.reflect.Field;
 
-    public UPDATE(TableName tableName, EQS eqs) {
+public class UPDATE implements Expression {
+    private TableName tableName;
+    private Expressions eqs;
+
+    public UPDATE(TableName tableName, EQ... eqs) {
         this.tableName = tableName;
-        this.eqs = eqs;
+        this.eqs = new Expressions(eqs, ", ");
     }
 
     @Override

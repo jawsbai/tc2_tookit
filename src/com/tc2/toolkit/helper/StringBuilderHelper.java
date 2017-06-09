@@ -1,4 +1,4 @@
-package com.tc2.toolkit.utils;
+package com.tc2.toolkit.helper;
 
 public class StringBuilderHelper {
     public static void removeLast(StringBuilder sb, int count) {

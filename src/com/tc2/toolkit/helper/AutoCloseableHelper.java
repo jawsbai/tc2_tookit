@@ -1,4 +1,4 @@
-package com.tc2.toolkit.utils;
+package com.tc2.toolkit.helper;
 
 public class AutoCloseableHelper {
     public static void close(AutoCloseable closeable) {

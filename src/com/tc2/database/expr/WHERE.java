@@ -1,10 +1,5 @@
 package com.tc2.database.expr;
 
-import com.tc2.toolkit.utils.StringBuilderHelper;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class WHERE implements Expression {
     private Expression expr;
     private StringBuilder conds = new StringBuilder();

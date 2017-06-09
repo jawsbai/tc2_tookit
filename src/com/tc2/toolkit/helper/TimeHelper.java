@@ -1,8 +1,8 @@
-package com.tc2.toolkit.time;
+package com.tc2.toolkit.helper;
 
 import java.util.Date;
 
-public class Time {
+public class TimeHelper {
     public static long now() {
         return new Date().getTime();
     }

@@ -1,4 +1,4 @@
-package com.tc2.toolkit.utils;
+package com.tc2.toolkit.helper;
 
 import java.io.UnsupportedEncodingException;
 
@@ -9,7 +9,7 @@ public class StringHelper {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return new byte[]{};
+        return null;
     }
 
     public static String fromBytes(byte[] bytes) {
@@ -18,7 +18,7 @@ public class StringHelper {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
 
     public static String fromBytes(byte[] bytes, int off, int len) {
@@ -27,6 +27,6 @@ public class StringHelper {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
 }

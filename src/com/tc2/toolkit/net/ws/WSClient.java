@@ -8,8 +8,8 @@ import com.tc2.toolkit.net.ws.http.HttpReceiver;
 import com.tc2.toolkit.net.ws.http.HttpRequest;
 import com.tc2.toolkit.print.Console;
 import com.tc2.toolkit.thread.ActiveObject;
-import com.tc2.toolkit.utils.SHA1;
-import com.tc2.toolkit.utils.StringHelper;
+import com.tc2.toolkit.util.SHA1;
+import com.tc2.toolkit.helper.StringHelper;
 
 import java.net.Socket;
 import java.util.ArrayList;

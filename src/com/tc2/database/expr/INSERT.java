@@ -2,7 +2,7 @@ package com.tc2.database.expr;
 
 import com.tc2.database.Database;
 import com.tc2.database.TableName;
-import com.tc2.toolkit.utils.StringBuilderHelper;
+import com.tc2.toolkit.helper.StringBuilderHelper;
 
 public class INSERT implements Expression {
     private TableName tableName;

@@ -3,7 +3,7 @@ package com.tc2.database;
 import com.tc2.database.expr.*;
 import com.tc2.toolkit.action.Action1;
 import com.tc2.toolkit.print.Console;
-import com.tc2.toolkit.utils.AutoCloseableHelper;
+import com.tc2.toolkit.helper.AutoCloseableHelper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

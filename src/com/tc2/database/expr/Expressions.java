@@ -1,6 +1,6 @@
 package com.tc2.database.expr;
 
-import com.tc2.toolkit.utils.StringBuilderHelper;
+import com.tc2.toolkit.helper.StringBuilderHelper;
 
 public class Expressions implements Expression {
     public final Expression[] exprs;

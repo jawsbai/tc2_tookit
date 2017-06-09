@@ -2,27 +2,36 @@ import com.tc2.database.Database;
 import com.tc2.database.expr.EQ;
 import com.tc2.database.expr.ORDER_BY;
 import com.tc2.database.expr.WHERE;
+import com.tc2.server.Server;
 import com.tc2.toolkit.net.ws.WebSocket;
 import com.tc2.toolkit.print.Console;
 import com.tc2.toolkit.promise.Promise;
 import com.tc2.toolkit.thread.ActiveObject;
-import com.tc2.galaxy.CONST;
-import com.tc2.galaxy.tables.TableHero;
+import com.tc2.server.tables.TableHero;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        galaxyTableTest();
+        galaxyStart();
+    }
+
+    public static void galaxyStart() {
+        try {
+            String root = System.getProperty("user.dir") + "/root";
+            Server server = new Server(root);
+            server.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void galaxyTableTest() {
         Database db = new Database();
         try {
-            db.connect(CONST.DB_CONN_STR);
+//            db.connect(CONST.DB_CONN_STR);
 
             TableHero tableHero = new TableHero(db);
             tableHero.createTable();

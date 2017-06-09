@@ -2,7 +2,7 @@ package com.tc2.toolkit.net.ws.http;
 
 import com.tc2.toolkit.bytearray.BoundedByteArray;
 import com.tc2.toolkit.net.ws.ReceiveChannel;
-import com.tc2.toolkit.utils.StringHelper;
+import com.tc2.toolkit.helper.StringHelper;
 
 public class HttpReceiver {
     private final static int R = '\r';

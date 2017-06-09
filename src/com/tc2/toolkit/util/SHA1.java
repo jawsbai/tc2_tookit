@@ -1,4 +1,4 @@
-package com.tc2.toolkit.utils;
+package com.tc2.toolkit.util;
 
 import com.tc2.toolkit.bytearray.ByteArrayHelper;
 

@@ -3,7 +3,7 @@ package com.tc2.toolkit.thread;
 import com.tc2.toolkit.action.Action0;
 import com.tc2.toolkit.func.Func0;
 import com.tc2.toolkit.print.Console;
-import com.tc2.toolkit.time.Time;
+import com.tc2.toolkit.helper.TimeHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -88,7 +88,7 @@ public class ActiveObject extends Ticker {
     }
 
     private class IntervalState {
-        long begin = Time.now();
+        long begin = TimeHelper.now();
         long acc = 0;
         boolean cancel = false;
     }
@@ -96,7 +96,7 @@ public class ActiveObject extends Ticker {
     public final Action0 timeout(Action0 action, int time) {
         IntervalState state = new IntervalState();
         tick(() -> {
-            if (Time.now() - state.begin >= time) {
+            if (TimeHelper.now() - state.begin >= time) {
                 action.invoke();
                 return true;
             }
@@ -108,7 +108,7 @@ public class ActiveObject extends Ticker {
     public final Action0 interval(Action0 action, int time) {
         IntervalState state = new IntervalState();
         tick(() -> {
-            long now = Time.now();
+            long now = TimeHelper.now();
             long ms = now - state.begin;
             state.begin = now;
             state.acc += ms;

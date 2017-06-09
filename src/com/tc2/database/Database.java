@@ -1,7 +1,7 @@
 package com.tc2.database;
 
 import com.tc2.database.expr.Expression;
-import com.tc2.toolkit.utils.AutoCloseableHelper;
+import com.tc2.toolkit.helper.AutoCloseableHelper;
 
 import java.sql.*;
 import java.util.regex.Matcher;

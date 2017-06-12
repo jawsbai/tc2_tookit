@@ -18,6 +18,10 @@ public class VARCHAR extends FieldDefined<String> {
         this(name, true, len);
     }
 
+    public VARCHAR(String name) {
+        this(name, true, 50);
+    }
+
     @Override
     public String fieldSQL() {
         return "`" + name + "`" +
@@ -26,7 +30,7 @@ public class VARCHAR extends FieldDefined<String> {
     }
 
     @Override
-    public String getRSValue(ResultSet rs) {
+    public String getValue(ResultSet rs) {
         try {
             return rs.getString(name);
         } catch (SQLException e) {

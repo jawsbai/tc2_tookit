@@ -1,4 +1,4 @@
-package com.tc2.server.real;
+package com.tc2.server.galaxy;
 
 import com.tc2.server.config.json.PlanetJson;
 
@@ -22,6 +22,12 @@ public class Planet {
         territories = new Territory[len];
         for (int i = 0; i < len; i++) {
             territories[i] = new Territory(config.territories[i]);
+        }
+    }
+
+    public void update() {
+        for (Territory territory : territories) {
+            territory.update();
         }
     }
 }

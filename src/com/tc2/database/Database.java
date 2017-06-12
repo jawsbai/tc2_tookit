@@ -2,6 +2,7 @@ package com.tc2.database;
 
 import com.tc2.database.expr.Expression;
 import com.tc2.toolkit.helper.AutoCloseableHelper;
+import com.tc2.toolkit.print.Console;
 
 import java.sql.*;
 import java.util.regex.Matcher;
@@ -11,13 +12,8 @@ public class Database {
     private Connection _conn;
     private Statement _stmt;
 
-    public Database() {
-    }
-
-    public void connect(String connStr) throws SQLException {
-        close();
-
-        _conn = DriverManager.getConnection(connStr);
+    public Database(String dbURL) throws SQLException {
+        _conn = DriverManager.getConnection(dbURL);
         _stmt = _conn.createStatement();
     }
 

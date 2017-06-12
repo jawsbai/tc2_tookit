@@ -1,17 +1,10 @@
-import com.tc2.database.Database;
-import com.tc2.database.expr.EQ;
-import com.tc2.database.expr.ORDER_BY;
-import com.tc2.database.expr.WHERE;
-import com.tc2.server.Server;
+import com.tc2.server.init.Server;
 import com.tc2.toolkit.net.ws.WebSocket;
 import com.tc2.toolkit.print.Console;
 import com.tc2.toolkit.promise.Promise;
 import com.tc2.toolkit.thread.ActiveObject;
-import com.tc2.server.tables.TableHero;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,8 +13,8 @@ public class Main {
 
     public static void galaxyStart() {
         try {
-            String root = System.getProperty("user.dir") + "/root";
-            Server server = new Server(root);
+            String dataPath = System.getProperty("user.dir") + "/data";
+            Server server = new Server(dataPath);
             server.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -29,43 +22,43 @@ public class Main {
     }
 
     public static void galaxyTableTest() {
-        Database db = new Database();
-        try {
-//            db.connect(CONST.DB_CONN_STR);
-
-            TableHero tableHero = new TableHero(db);
-            tableHero.createTable();
-
-            for (int i = 1; i < 6; i++) {
-                tableHero.insert(
-                        TableHero.FD_HERO_ID.eq(i),
-                        TableHero.FD_USER_ID.eq("user" + i),
-                        TableHero.FD_HERO_NAME.eq("name" + i),
-                        TableHero.FD_CREATE_TIME.eq("11111"));
-            }
-
-
-            Console.log(tableHero.delete(new WHERE(TableHero.FD_HERO_ID.eq(3))));
-            Console.log(tableHero.delete(new WHERE(TableHero.FD_HERO_ID.eq(2))));
-
-            Console.log(tableHero.exists(new WHERE(TableHero.FD_HERO_ID.eq(2))));
-            Console.log(tableHero.exists(new WHERE(TableHero.FD_HERO_ID.eq(1))));
-
-            Console.log(tableHero.count(new WHERE(TableHero.FD_HERO_ID.eq(1))
-                    .and(TableHero.FD_USER_ID.eq("user1"))));
-
-            tableHero.update(
-                    new EQ[]{TableHero.FD_HERO_NAME.eq("update")},
-                    new WHERE(TableHero.FD_HERO_ID.eq(1)));
-
-
-            tableHero.select(new WHERE(), new ORDER_BY(TableHero.FD_USER_ID, "desc"), 100, (ResultSet rs) -> {
-                Console.log(TableHero.FD_USER_ID.getRSValue(rs));
-            });
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        Database db = new Database();
+//        try {
+////            db.connect(CONST.DB_CONN_STR);
+//
+//            TableHero tableHero = new TableHero(db);
+//            tableHero.createTable();
+//
+//            for (int i = 1; i < 6; i++) {
+//                tableHero.insert(
+//                        TableHero.FD_HERO_ID.eq(i),
+//                        TableHero.FD_HERO_ID.eq("user" + i),
+//                        TableHero.FD_HERO_NAME.eq("name" + i),
+//                        TableHero.FD_CREATE_TIME.eq("11111"));
+//            }
+//
+//
+//            Console.log(tableHero.delete(new WHERE(TableHero.FD_HERO_ID.eq(3))));
+//            Console.log(tableHero.delete(new WHERE(TableHero.FD_HERO_ID.eq(2))));
+//
+//            Console.log(tableHero.exists(new WHERE(TableHero.FD_HERO_ID.eq(2))));
+//            Console.log(tableHero.exists(new WHERE(TableHero.FD_HERO_ID.eq(1))));
+//
+//            Console.log(tableHero.count(new WHERE(TableHero.FD_HERO_ID.eq(1))
+//                    .and(TableHero.FD_HERO_ID.eq("user1"))));
+//
+//            tableHero.update(
+//                    new EQ[]{TableHero.FD_HERO_NAME.eq("update")},
+//                    new WHERE(TableHero.FD_HERO_ID.eq(1)));
+//
+//
+//            tableHero.select(new WHERE(), new ORDER_BY(TableHero.FD_HERO_ID, "desc"), 100, (ResultSet rs) -> {
+//                Console.log(TableHero.FD_HERO_ID.getValue(rs));
+//            });
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static void databaseTest() {

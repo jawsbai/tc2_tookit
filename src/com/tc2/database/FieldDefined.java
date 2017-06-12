@@ -18,7 +18,7 @@ public abstract class FieldDefined<T> {
 
     public abstract String fieldSQL();
 
-    public abstract T getRSValue(ResultSet rs);
+    public abstract T getValue(ResultSet rs);
 
     public EQ eq(T value) {
         return new EQ(this, value);

@@ -28,7 +28,7 @@ public class INT extends FieldDefined<Integer> {
 
     @Override
     public String fieldSQL() {
-        return "`" + name + "`" +
+        return "`" + name+ "`" +
                 " " + type + "(" + len + ")" +
                 (unsigned ? " UNSIGNED" : "") +
                 (notNull ? " NOT NULL" : "") +
@@ -36,7 +36,7 @@ public class INT extends FieldDefined<Integer> {
     }
 
     @Override
-    public Integer getRSValue(ResultSet rs) {
+    public Integer getValue(ResultSet rs) {
         try {
             return rs.getInt(name);
         } catch (SQLException e) {

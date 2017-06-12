@@ -1,4 +1,4 @@
-package com.tc2.server.real;
+package com.tc2.server.galaxy;
 
 import com.tc2.server.config.json.CountryJson;
 

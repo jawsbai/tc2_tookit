@@ -22,7 +22,7 @@ public class TEXT extends FieldDefined<String> {
     }
 
     @Override
-    public String getRSValue(ResultSet rs) {
+    public String getValue(ResultSet rs) {
         try {
             return rs.getString(name);
         } catch (SQLException e) {

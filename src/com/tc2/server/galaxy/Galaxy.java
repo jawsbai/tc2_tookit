@@ -1,13 +1,16 @@
-package com.tc2.server.real;
+package com.tc2.server.galaxy;
 
 import com.tc2.server.config.GalaxyConfig;
+import com.tc2.toolkit.thread.ActiveObject;
 
-public class Galaxy {
+public class Galaxy extends ActiveObject {
     public final int id;
     public final String key;
     public final Planet[] planets;
 
     public Galaxy(GalaxyConfig config) {
+        super(1000 / 30);
+
         id = config.id;
         key = config.key;
 
@@ -17,8 +20,18 @@ public class Galaxy {
             planets[i] = new Planet(config.planets[i]);
         }
     }
-}
 
-//A1 B1 C1
-//A2 B2 C2
-//A3 B3 C3
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected synchronized void onTick() {
+        super.onTick();
+
+        for (Planet planet : planets) {
+            planet.update();
+        }
+    }
+}

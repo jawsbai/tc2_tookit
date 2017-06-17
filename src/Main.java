@@ -1,14 +1,22 @@
-import com.tc2.server.init.Server;
-import com.tc2.toolkit.net.ws.WebSocket;
-import com.tc2.toolkit.print.Console;
-import com.tc2.toolkit.promise.Promise;
-import com.tc2.toolkit.thread.ActiveObject;
+import rpc2j_table.Player;
+import server.init.Server;
+import toolkit.net.ws.WebSocket;
+import toolkit.print.Console;
+import toolkit.promise.Promise;
+import toolkit.thread.ActiveObject;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 public class Main {
     public static void main(String[] args) {
-        galaxyStart();
+        test();
+    }
+
+    public static void test() {
+        for (Field field : Player.class.getFields()) {
+            Console.log(field.getName(), field.getType());
+        }
     }
 
     public static void galaxyStart() {

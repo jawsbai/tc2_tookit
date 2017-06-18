@@ -35,4 +35,12 @@ public class Return<T> {
     public boolean isError() {
         return code != 0;
     }
+
+    @Override
+    public String toString() {
+        return "Return{" +
+                "code=" + code +
+                ", value=" + value +
+                '}';
+    }
 }

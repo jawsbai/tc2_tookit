@@ -9,12 +9,12 @@ import toolkit.thread.ActiveObject;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Room {
+public abstract class Room<T extends Guest> {
     public final RoomService service;
     private long beginTime = 0;
     public final long maxTime;
 
-    private final ArrayList<Guest> guests = new ArrayList<>();
+    protected final ArrayList<T> guests = new ArrayList<>();
 
     private boolean removed = false;
 
@@ -32,7 +32,7 @@ public class Room {
     }
 
     //room add remove
-    public Promise<Boolean> addToService() {
+    public final Promise<Boolean> addToService() {
         Deferred<Boolean> defer = new Deferred<>();
         service.invoke(() -> {
             boolean b = service.addRoom(this);
@@ -44,7 +44,7 @@ public class Room {
         return defer.promise();
     }
 
-    public Promise<Boolean> removeFromService() {
+    public final Promise<Boolean> removeFromService() {
         Deferred<Boolean> defer = new Deferred<>();
         service.invoke(() -> {
             boolean b = service.removeRoom(this);
@@ -75,7 +75,7 @@ public class Room {
     }
 
     //guest add remove
-    public final boolean addGuest(Guest guest) {
+    protected final boolean addGuest(T guest) {
         if (!guests.contains(guest)) {
             guests.add(guest);
             return true;
@@ -83,7 +83,7 @@ public class Room {
         return false;
     }
 
-    public final boolean removeGuest(Guest guest) {
+    protected final boolean removeGuest(T guest) {
         return guests.remove(guest);
     }
 

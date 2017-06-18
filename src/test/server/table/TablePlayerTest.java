@@ -1,13 +1,12 @@
 package test.server.table;
 
 import com.alibaba.fastjson.JSON;
-import server.service.DatabaseService;
 import server.table.TablePlayer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import test.TestEnv;
+import test.TestHelper;
 import toolkit.print.Console;
 
 /**
@@ -29,7 +28,7 @@ public class TablePlayerTest {
 
     @Test
     public void testCreatePlayer() throws Exception {
-        TablePlayer t = TestEnv.initDatabaseService().tablePlayer;
+        TablePlayer t = TestHelper.initDatabaseService().tablePlayer;
 
         Assert.assertTrue(!t.userExists("user1"));
 

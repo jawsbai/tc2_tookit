@@ -2,16 +2,13 @@ package test.server.table;
 
 import com.alibaba.fastjson.JSON;
 import rpc2j_table.Hero;
-import server.config.ConfigLoader;
-import server.config.json.StartupJson;
 import toolkit.lang.Return;
-import server.service.DatabaseService;
 import server.table.TableHero;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import test.TestEnv;
+import test.TestHelper;
 import toolkit.print.Console;
 
 import java.util.Date;
@@ -36,7 +33,7 @@ public class TableHeroTest {
 
     @Test
     public void testCreateHero() throws Exception {
-        TableHero t = TestEnv.initDatabaseService().tableHero;
+        TableHero t = TestHelper.initDatabaseService().tableHero;
 
         Hero hero = new Hero(
                 null,

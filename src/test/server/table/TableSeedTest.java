@@ -1,12 +1,11 @@
 package test.server.table;
 
-import server.service.DatabaseService;
 import server.table.TableSeed;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import test.TestEnv;
+import test.TestHelper;
 
 import java.util.Objects;
 
@@ -32,7 +31,7 @@ public class TableSeedTest {
      */
     @Test
     public void testNewId() throws Exception {
-        TableSeed t = TestEnv.initDatabaseService().tableSeed;
+        TableSeed t = TestHelper.initDatabaseService().tableSeed;
 
         String prefix = "solar";
 

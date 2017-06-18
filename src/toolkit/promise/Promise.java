@@ -40,9 +40,9 @@ public class Promise<RESULT> {
 //        return defer.promise();
 //    }
 
-    private static final int PENDING = 0;
-    private static final int FULFILLED = 1;
-    private static final int REJECTED = 2;
+    public static final int PENDING = 0;
+    public static final int FULFILLED = 1;
+    public static final int REJECTED = 2;
 
     private final ActiveObject insAO;
     private int state = PENDING;

@@ -6,10 +6,8 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 import rpc2j_table.Faction;
-import rpc2j_table.Galaxy;
 import server.table.TableFaction;
-import server.table.TableGalaxy;
-import test.TestEnv;
+import test.TestHelper;
 import toolkit.print.Console;
 
 import java.util.Date;
@@ -26,7 +24,7 @@ public class TableFactionTest {
 
     @Test
     public void test() throws Exception {
-        TableFaction t = TestEnv.initDatabaseService().tableFaction;
+        TableFaction t = TestHelper.initDatabaseService().tableFaction;
 
         boolean f = t.createFaction(new Faction(1, "name1", "capital", new Date()));
         Assert.assertTrue(f);

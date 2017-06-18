@@ -1,14 +1,17 @@
 package server.room;
 
 import server.service.RoomService;
+import toolkit.lang.Return;
 
-public class WarRoom extends Room {
-    public final int factionMaxHeros;
+import java.util.Objects;
 
-    public WarRoom(RoomService service, int maxTime, int factionMaxHeros) {
+public class WarRoom extends Room<WarGuest> {
+    public final int factionMaxGuests;
+
+    public WarRoom(RoomService service, int maxTime, int factionMaxGuests) {
         super(service, maxTime);
 
-        this.factionMaxHeros = factionMaxHeros;
+        this.factionMaxGuests = factionMaxGuests;
     }
 
     @Override
@@ -19,6 +22,38 @@ public class WarRoom extends Room {
     @Override
     protected void onRemoved() {
         super.onRemoved();
+    }
+
+    private WarGuest findWarGuestByHeroId(String heroId) {
+        for (WarGuest guest : guests) {
+            if (Objects.equals(guest.hero.getHeroId(), heroId)) {
+                return guest;
+            }
+        }
+        return null;
+    }
+
+    private int getFactionWarGuests(int factionId) {
+        int count = 0;
+        for (WarGuest guest : guests) {
+            if (guest.hero.getFactionId() == factionId) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    //guest add remove
+    protected final Return<String> addWarGuest(WarGuest guest) {
+        Return<String> rt = new Return<>();
+        if (findWarGuestByHeroId(guest.hero.getHeroId()) != null) {
+            rt.setCode(1);
+        } else if (getFactionWarGuests(guest.hero.getFactionId()) >= factionMaxGuests) {
+            rt.setCode(2);
+        } else {
+            addGuest(guest);
+        }
+        return rt;
     }
 
     @Override

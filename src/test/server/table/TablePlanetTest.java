@@ -5,11 +5,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import rpc2j_table.Galaxy;
 import rpc2j_table.Planet;
-import server.table.TableGalaxy;
 import server.table.TablePlanet;
-import test.TestEnv;
+import test.TestHelper;
 import toolkit.print.Console;
 
 import java.util.Date;
@@ -33,7 +31,7 @@ public class TablePlanetTest {
 
     @Test
     public void test() throws Exception {
-        TablePlanet t = TestEnv.initDatabaseService().tablePlanet;
+        TablePlanet t = TestHelper.initDatabaseService().tablePlanet;
 
         boolean f = t.createPlanet(new Planet(1, "name1", new Date()));
         Assert.assertTrue(f);

@@ -5,9 +5,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import rpc2j_table.OperationLog;
-import server.service.DatabaseService;
 import server.table.TableOperationLog;
-import test.TestEnv;
+import test.TestHelper;
 
 import java.util.Date;
 
@@ -30,7 +29,7 @@ public class TableOperationLogTest {
 
     @Test
     public void testInsert() throws Exception {
-        TableOperationLog t = new TableOperationLog(TestEnv.initDatabaseService(), "al1");
+        TableOperationLog t = new TableOperationLog(TestHelper.initDatabaseService(), "al1");
         t.createTable();
 
         boolean insert = t.insert(new OperationLog(0, "r1", "type1", "", new Date()));

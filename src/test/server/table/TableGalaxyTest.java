@@ -7,8 +7,7 @@ import org.junit.Before;
 import org.junit.After;
 import rpc2j_table.Galaxy;
 import server.table.TableGalaxy;
-import server.table.TableHero;
-import test.TestEnv;
+import test.TestHelper;
 import toolkit.print.Console;
 
 import java.util.Date;
@@ -25,7 +24,7 @@ public class TableGalaxyTest {
 
     @Test
     public void test() throws Exception {
-        TableGalaxy t = TestEnv.initDatabaseService().tableGalaxy;
+        TableGalaxy t = TestHelper.initDatabaseService().tableGalaxy;
 
         boolean f = t.createGalaxy(new Galaxy(1, new Date()));
         Assert.assertTrue(f);

@@ -1,7 +1,7 @@
 package server.hero;
 
 public interface IHero {
-    int getHeroId();
+    String getHeroId();
 
     int getFactionId();
 }

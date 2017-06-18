@@ -2,13 +2,12 @@ package test.server.table;
 
 import com.alibaba.fastjson.JSON;
 import rpc2j_table.Unit;
-import server.service.DatabaseService;
 import server.table.TableUnit;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import test.TestEnv;
+import test.TestHelper;
 import toolkit.print.Console;
 
 import java.util.Date;
@@ -32,7 +31,7 @@ public class TableUnitTest {
 
     @Test
     public void testCreateUnit() throws Exception {
-        TableUnit t = TestEnv.initDatabaseService().tableUnit;
+        TableUnit t = TestHelper.initDatabaseService().tableUnit;
 
         Unit unit = new Unit(
                 null,

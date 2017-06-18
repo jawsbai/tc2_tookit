@@ -8,7 +8,7 @@ import server.service.AccountService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;
-import test.TestEnv;
+import test.TestHelper;
 
 /**
  * AccountService Tester.
@@ -29,7 +29,7 @@ public class AccountServiceTest {
 
     @org.junit.Test
     public void test() throws Exception {
-        ConfigLoader configLoader = new ConfigLoader(TestEnv.getConfigPath());
+        ConfigLoader configLoader = new ConfigLoader(TestHelper.getConfigPath());
         AccountJson accountJson = configLoader.load(AccountJson.class, "/account.json");
         AccountService accountService = new AccountService(accountJson);
 

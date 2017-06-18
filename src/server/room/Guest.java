@@ -6,15 +6,15 @@ import toolkit.promise.Promise;
 
 import java.util.Date;
 
-public class Guest {
-    public final Room room;
+public abstract class Guest<T extends Room> {
+    public final T room;
     public final int queueTime;
     private long beginTime;
 
     private boolean joined = false;
     private boolean removed = false;
 
-    public Guest(Room room, int queueTime) {
+    public Guest(T room, int queueTime) {
         this.room = room;
         this.queueTime = queueTime;
     }
@@ -32,7 +32,7 @@ public class Guest {
     }
 
     //add
-    public Promise<Boolean> addToRoom() {
+    protected final Promise<Boolean> addToRoom() {
         Deferred<Boolean> defer = new Deferred<>();
         room.service.invoke(() -> {
             boolean b = room.addGuest(this);
@@ -44,7 +44,7 @@ public class Guest {
         return defer.promise();
     }
 
-    public Promise<Boolean> removeFromRoom() {
+    protected final Promise<Boolean> removeFromRoom() {
         Deferred<Boolean> defer = new Deferred<>();
         room.service.invoke(() -> {
             boolean b = room.removeGuest(this);
@@ -66,10 +66,14 @@ public class Guest {
         Console.log(getClass().getSimpleName(), "onRemoved");
     }
 
+    protected void onJoined() {
+        Console.log(getClass().getSimpleName(), "joined");
+    }
+
     public void update() {
         if (!joined && elapsedTime() > queueTime) {
             joined = true;
-            Console.log("joined");
+            onJoined();
         }
     }
 }

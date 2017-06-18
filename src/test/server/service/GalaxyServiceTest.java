@@ -5,9 +5,7 @@ import org.junit.Before;
 import server.config.ConfigLoader;
 import server.config.json.GalaxyJson;
 import server.service.GalaxyService;
-import test.TestEnv;
-
-import java.util.HashMap;
+import test.TestHelper;
 
 /**
  * GalaxyService Tester.
@@ -28,7 +26,7 @@ public class GalaxyServiceTest {
 
     @org.junit.Test
     public void test() throws Exception {
-        ConfigLoader configLoader = new ConfigLoader(TestEnv.getConfigPath());
+        ConfigLoader configLoader = new ConfigLoader(TestHelper.getConfigPath());
         GalaxyJson galaxyJson = configLoader.load(GalaxyJson.class, "/galaxy.json");
         GalaxyService s = new GalaxyService(galaxyJson);
         s.start();

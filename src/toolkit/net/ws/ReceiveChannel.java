@@ -14,15 +14,15 @@ public class ReceiveChannel {
         }
     }
 
-    private Node _first;
-    private Node _last;
-    private int _length = 0;
+    private Node first;
+    private Node last;
+    private int length = 0;
 
     public ReceiveChannel() {
     }
 
     public int length() {
-        return _length;
+        return length;
     }
 
     public void receive(byte[] bytes, int len) {
@@ -30,29 +30,29 @@ public class ReceiveChannel {
         node.off = 0;
         node.len = len;
         node.bytes = bytes;
-        _length += len;
+        length += len;
 
-        if (_first == null) {
-            _first = node;
+        if (first == null) {
+            first = node;
         } else {
-            _last.next = node;
+            last.next = node;
         }
-        _last = node;
+        last = node;
     }
 
     public BoundedByteArray read(int len) {
-        if (_first == null) {
+        if (first == null) {
             return null;
         }
 
-        if (_first.realLen() >= len) {
-            BoundedByteArray b = new BoundedByteArray(_first.bytes, _first.off, len);
-            _first.off += len;
+        if (first.realLen() >= len) {
+            BoundedByteArray b = new BoundedByteArray(first.bytes, first.off, len);
+            first.off += len;
             trim();
             return b;
         }
 
-        Node node = _first;
+        Node node = first;
         int total = 0;
         int index = 0;
         byte[] bytes = new byte[len];
@@ -86,7 +86,7 @@ public class ReceiveChannel {
         int length = 0;
         Node first = null;
 
-        Node node = _first;
+        Node node = this.first;
         while (node != null) {
             int realLen = node.realLen();
             length += realLen;
@@ -96,13 +96,13 @@ public class ReceiveChannel {
             node = node.next;
         }
 
-        _first = first;
-        _length = length;
+        this.first = first;
+        this.length = length;
         if (length == 0) {
-            _last = null;
+            last = null;
         }
 
-        node = _first;
+        node = this.first;
         while (node != null) {
 //            Console.log("trim", node.off, node.len);
             node = node.next;
@@ -110,7 +110,7 @@ public class ReceiveChannel {
     }
 
     public byte getByte(int off) {
-        Node node = _first;
+        Node node = first;
         int total = 0;
         while (node != null) {
             int readLen = node.realLen();

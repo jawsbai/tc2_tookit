@@ -57,14 +57,18 @@ FD_ONLINE.getValue(rs)
                 );
             }
             
-            public static TableDefined newTableDefined(){
+            public static TableDefined newTableDefined(String tableName){
                 return new TableDefined(
-                    new TableName("Player"),
+                    new TableName(tableName),
                     FD_PLAYERID,
 FD_USERID,
 FD_CREATETIME,
 FD_ONLINE
                 );
+            }
+            
+            public static TableDefined newTableDefined(){
+                return newTableDefined("Player");
             }
             
             public EQ[] toEQS(){

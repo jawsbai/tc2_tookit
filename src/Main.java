@@ -7,10 +7,11 @@ import toolkit.thread.ActiveObject;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
-        test();
+        serverTest();
     }
 
     public static void test() {
@@ -19,9 +20,9 @@ public class Main {
         }
     }
 
-    public static void galaxyStart() {
+    public static void serverTest() {
         try {
-            String dataPath = System.getProperty("user.dir") + "/data";
+            String dataPath = System.getProperty("user.dir") + "/config";
             Server server = new Server(dataPath);
             server.start();
         } catch (Exception e) {
@@ -116,13 +117,13 @@ public class Main {
             Promise[] promises = {
                     new Promise<>("ssssssss")
             };
-            Promise.all(promises).then(() -> {
-                Console.log("all");
-            }).catch_(e -> {
-                Console.log("all", e);
-            }).finish(() -> {
-                Console.log("all finish");
-            });
+//            Promise.all(promises).then(() -> {
+//                Console.log("all");
+//            }).catch_(e -> {
+//                Console.log("all", e);
+//            }).finish(() -> {
+//                Console.log("all finish");
+//            });
 
 
             new Promise<>("1111111").then(result -> {

@@ -5,45 +5,56 @@ import toolkit.lang.Action1;
 import toolkit.lang.Action2;
 import toolkit.lang.Func0;
 import toolkit.lang.Func1;
+import toolkit.print.Console;
 import toolkit.thread.ActiveObject;
 
 public class Promise<RESULT> {
-    public static Promise all(final Promise... promises) {
-        Deferred<Object> defer = new Deferred<>();
-        ActiveObject.currentTick(() -> {
-            int count = promises.length;
-            for (Promise promise : promises) {
-                if (promise.state() != PENDING) {
-                    count--;
+    private static final ActiveObject localAO = new ActiveObject(1, "Promise.localAO");
 
-                    if (promise.state() == REJECTED) {
-                        defer.reject(promise.error());
-                        return true;
-                    }
-                }
-            }
-            if (count == 0) {
-                defer.resolve(null);
-                return true;
-            }
-            return false;
-        });
-        return defer.promise();
+    static {
+        localAO.start();
     }
 
-    public static final int PENDING = 0;
-    public static final int FULFILLED = 1;
-    public static final int REJECTED = 2;
+//    public static Promise all(final Promise... promises) {
+//        Deferred defer = new Deferred();
+//
+//        ActiveObject current = ActiveObject.current();
+//        (current != null ? current : ao).tick(() -> {
+//            int count = promises.length;
+//            for (Promise promise : promises) {
+//                if (promise.state() != PENDING) {
+//                    count--;
+//
+//                    if (promise.state() == REJECTED) {
+//                        defer.reject(promise.error());
+//                        return true;
+//                    }
+//                }
+//            }
+//            if (count == 0) {
+//                defer.resolve();
+//                return true;
+//            }
+//            return false;
+//        });
+//        return defer.promise();
+//    }
 
-    private int _state = PENDING;
-    private RESULT _result;
-    private Exception _error;
+    private static final int PENDING = 0;
+    private static final int FULFILLED = 1;
+    private static final int REJECTED = 2;
+
+    private final ActiveObject insAO;
+    private int state = PENDING;
+    private RESULT result;
+    private Exception error;
 
     public Promise(RESULT result) {
         this((resolve, reject) -> resolve.invoke(result));
     }
 
     public Promise(Action2<Action1<RESULT>, Action1<Exception>> executor) {
+        insAO = ActiveObject.current();
         try {
             executor.invoke(this::resolve, this::reject);
         } catch (Exception e) {
@@ -52,34 +63,43 @@ public class Promise<RESULT> {
     }
 
     public int state() {
-        return _state;
+        return state;
     }
 
     public RESULT result() {
-        return _result;
+        return result;
     }
 
     public Exception error() {
-        return _error;
+        return error;
     }
 
     private synchronized void resolve(RESULT result) {
-        if (_state == PENDING) {
-            _result = result;
-            _state = FULFILLED;
+        if (state == PENDING) {
+            this.result = result;
+            state = FULFILLED;
         }
     }
 
     private synchronized void reject(Exception error) {
-        if (_state == PENDING) {
-            _error = error;
-            _state = REJECTED;
+        if (state == PENDING) {
+            this.error = error;
+            state = REJECTED;
         }
     }
 
+    private ActiveObject getAO() {
+        if (insAO != null) {
+            Console.log("insAO", insAO, ActiveObject.current());
+            return insAO;
+        }
+        Console.log("localAO", localAO, ActiveObject.current());
+        return localAO;
+    }
+
     private void tickResult(Action0 action) {
-        ActiveObject.currentTick(() -> {
-            if (_state == PENDING) {
+        getAO().tick(() -> {
+            if (state == PENDING) {
                 return false;
             }
             action.invoke();
@@ -90,9 +110,9 @@ public class Promise<RESULT> {
     public <T> Promise<T> then(Class<T> c, Func1<RESULT, Promise<T>> func) {
         Deferred<T> defer = new Deferred<>();
         tickResult(() -> {
-            if (_state == FULFILLED) {
+            if (state == FULFILLED) {
                 try {
-                    Promise<T> promise = func.invoke(_result);
+                    Promise<T> promise = func.invoke(result);
                     if (promise == null) {
                         defer.resolve(null);
                     } else {
@@ -105,7 +125,7 @@ public class Promise<RESULT> {
                     defer.reject(e);
                 }
             } else {
-                defer.reject(_error);
+                defer.reject(error);
             }
         });
         return defer.promise();
@@ -131,8 +151,8 @@ public class Promise<RESULT> {
 
     public Promise<RESULT> catch_(Action1<Exception> action) {
         tickResult(() -> {
-            if (_state == REJECTED) {
-                action.invoke(_error);
+            if (state == REJECTED) {
+                action.invoke(error);
             }
         });
         return this;

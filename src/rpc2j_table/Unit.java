@@ -117,9 +117,9 @@ FD_DEATHS.getValue(rs)
                 );
             }
             
-            public static TableDefined newTableDefined(){
+            public static TableDefined newTableDefined(String tableName){
                 return new TableDefined(
-                    new TableName("Unit"),
+                    new TableName(tableName),
                     FD_UNITID,
 FD_HEROID,
 FD_NAME,
@@ -131,6 +131,10 @@ FD_EXP,
 FD_HEALTH,
 FD_DEATHS
                 );
+            }
+            
+            public static TableDefined newTableDefined(){
+                return newTableDefined("Unit");
             }
             
             public EQ[] toEQS(){

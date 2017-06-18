@@ -28,11 +28,11 @@ public class WSClient extends SocketClient {
     private static final int OPCODE_PNG = 0xA;//表示pong
 //    private static final int OPCODE_       0xB-F暂时无定义，为以后的控制帧保留
 
-    private HttpReceiver _httpReceiver = new HttpReceiver();
-    private FrameReceiver _frameReceiver;
-    private HttpRequest _request;
-    private ReceiveChannel _channel = new ReceiveChannel();
-    private ArrayList<Frame> _frames = new ArrayList<>();
+    private HttpReceiver httpReceiver = new HttpReceiver();
+    private FrameReceiver frameReceiver;
+    private HttpRequest request;
+    private ReceiveChannel channel = new ReceiveChannel();
+    private ArrayList<Frame> frames = new ArrayList<>();
 
     public WSClient(Socket socket, ActiveObject recvAO, ActiveObject sendAO) {
         super(socket, 1024, recvAO, sendAO);
@@ -42,29 +42,29 @@ public class WSClient extends SocketClient {
     protected void onReceive(byte[] bytes, int len) {
 //        Console.log("=========onReceive", len);
 
-        _channel.receive(bytes, len);
+        channel.receive(bytes, len);
 
-        if (_frameReceiver != null) {
-            ArrayList<Frame> frames = _frameReceiver.receive(_channel);
+        if (frameReceiver != null) {
+            ArrayList<Frame> frames = frameReceiver.receive(channel);
             onFrame(frames);
-        } else if (_httpReceiver != null) {
-            HttpRequest request = _httpReceiver.receive(_channel);
+        } else if (httpReceiver != null) {
+            HttpRequest request = httpReceiver.receive(channel);
             if (request != null) {
-                _request = request;
-                _httpReceiver = null;
+                this.request = request;
+                httpReceiver = null;
                 onHttpRequest();
             }
         }
     }
 
     private void onHttpRequest() {
-        if (Objects.equals(_request.upgrade(), "Upgrade")
-                || Objects.equals(_request.secWebSocketKey(), "")
-                || Objects.equals(_request.secWebSocketKey(), "")) {
+        if (Objects.equals(request.upgrade(), "Upgrade")
+                || Objects.equals(request.secWebSocketKey(), "")
+                || Objects.equals(request.secWebSocketKey(), "")) {
             close();
         } else {
-            _frameReceiver = new FrameReceiver();
-            send(StringHelper.toBytes(responseText(_request)));
+            frameReceiver = new FrameReceiver();
+            send(StringHelper.toBytes(responseText(request)));
         }
     }
 
@@ -78,28 +78,28 @@ public class WSClient extends SocketClient {
             }
 
             if (frame.fin) {
-                if (_frames.size() > 0) {
-                    _frames.add(frame);
+                if (this.frames.size() > 0) {
+                    this.frames.add(frame);
 
                     int count = 0;
                     int index = 0;
-                    for (Frame f : _frames) {
+                    for (Frame f : this.frames) {
                         count += f.payload;
                     }
                     byte[] bytes = new byte[count];
-                    for (Frame f : _frames) {
+                    for (Frame f : this.frames) {
                         System.arraycopy(f.body.bytes, f.body.off, bytes, index, f.body.len);
                         index += f.body.len;
                     }
 //                    Console.log(count, bytes.length);
 //                    Console.log(bytes);
 
-                    _frames.clear();
+                    this.frames.clear();
                 } else {
                     sendFrame(1, 2, new byte[]{1, 2, 3, 4, 5, 6});
                 }
             } else {
-                _frames.add(frame);
+                this.frames.add(frame);
             }
         }
     }

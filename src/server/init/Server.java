@@ -1,32 +1,39 @@
 package server.init;
 
-import server.config.GalaxyConfig;
-import server.config.StartupConfig;
-import server.config.UserConfig;
-import server.galaxy.Galaxy;
-import server.service.DatabaseService;
+import server.config.ConfigLoader;
+import server.config.json.AccountJson;
+import server.config.json.GalaxyJson;
+import server.config.json.StartupJson;
 import server.service.AccountService;
+import server.service.DatabaseService;
+import server.service.GalaxyService;
+import server.service.PlayerService;
 
 public class Server {
-    public final DatabaseService databaseService;
-    public final AccountService accountService;
+    public Server(String configPath) throws Exception {
+        ConfigLoader configLoader = new ConfigLoader(configPath);
 
-    public final Galaxy galaxy;
+        StartupJson startupJson = configLoader.load(StartupJson.class, "/startup.json");
 
-    public Server(String dataPath) throws Exception {
-        StartupConfig startupConfig = new StartupConfig(dataPath);
-        UserConfig userConfig = new UserConfig(dataPath);
-        GalaxyConfig galaxyConfig = new GalaxyConfig(dataPath);
-
-        databaseService = new DatabaseService(startupConfig.db);
+        //DatabaseService
+        DatabaseService databaseService = new DatabaseService(startupJson.db);
         databaseService.start();
+        Locator.register(databaseService);
 
-        accountService = new AccountService(userConfig);
+        //GalaxyService
+        GalaxyJson galaxyJson = configLoader.load(GalaxyJson.class, "/galaxy.json");
+        GalaxyService galaxyService = new GalaxyService(galaxyJson);
+        Locator.register(galaxyService);
 
-        galaxy = new Galaxy(galaxyConfig);
-        galaxy.start();
+        //AccountService
+        AccountJson accountJson = configLoader.load(AccountJson.class, "/account.json");
+        AccountService accountService = new AccountService(accountJson);
+        Locator.register(accountService);
 
-//        Console.log(JSON.toJSON(galaxy));
+        //PlayerService
+        PlayerService playerService = new PlayerService();
+        playerService.start();
+        Locator.register(playerService);
     }
 
     public void start() {

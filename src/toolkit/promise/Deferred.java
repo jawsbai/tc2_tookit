@@ -3,27 +3,31 @@ package toolkit.promise;
 import toolkit.lang.Action1;
 
 public class Deferred<RESULT> {
-    private Promise<RESULT> _promise;
+    private Promise<RESULT> promise;
 
-    private Action1<RESULT> _resolve;
-    private Action1<Exception> _reject;
+    private Action1<RESULT> resolve;
+    private Action1<Exception> reject;
 
     public Deferred() {
-        _promise = new Promise<>((resolve, reject) -> {
-            _resolve = resolve;
-            _reject = reject;
+        promise = new Promise<>((resolve, reject) -> {
+            this.resolve = resolve;
+            this.reject = reject;
         });
     }
 
     public Promise<RESULT> promise() {
-        return _promise;
+        return promise;
     }
 
     public void resolve(RESULT result) {
-        _resolve.invoke(result);
+        resolve.invoke(result);
+    }
+
+    public void resolve() {
+        resolve(null);
     }
 
     public void reject(Exception error) {
-        _reject.invoke(error);
+        reject.invoke(error);
     }
 }

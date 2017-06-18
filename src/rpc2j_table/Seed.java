@@ -57,14 +57,18 @@ FD_UPDATETIME.getValue(rs)
                 );
             }
             
-            public static TableDefined newTableDefined(){
+            public static TableDefined newTableDefined(String tableName){
                 return new TableDefined(
-                    new TableName("Seed"),
+                    new TableName(tableName),
                     FD_KEY,
 FD_INDEX,
 FD_CREATETIME,
 FD_UPDATETIME
                 );
+            }
+            
+            public static TableDefined newTableDefined(){
+                return newTableDefined("Seed");
             }
             
             public EQ[] toEQS(){

@@ -3,7 +3,7 @@ package server.service;
 import toolkit.database.Database;
 import toolkit.database.Table;
 import server.config.json.DBConfigJson;
-import server.tables.*;
+import server.table.*;
 import toolkit.thread.ActiveObject;
 
 import java.lang.reflect.Field;
@@ -14,6 +14,10 @@ public class DatabaseService extends ActiveObject {
     public final Database database;
 
     public final TableSeed tableSeed;
+    public final TableGalaxy tableGalaxy;
+    public final TablePlanet tablePlanet;
+    public final TableTerritory tableTerritory;
+    public final TableFaction tableFaction;
     public final TablePlayer tablePlayer;
     public final TableHero tableHero;
     public final TableUnit tableUnit;
@@ -26,6 +30,10 @@ public class DatabaseService extends ActiveObject {
         database = new Database(config.dbURL);
 
         tableSeed = new TableSeed(this, config.seedPrefix);
+        tableGalaxy = new TableGalaxy(this);
+        tablePlanet = new TablePlanet(this);
+        tableTerritory = new TableTerritory(this);
+        tableFaction = new TableFaction(this);
         tablePlayer = new TablePlayer(this);
         tableHero = new TableHero(this);
         tableUnit = new TableUnit(this);

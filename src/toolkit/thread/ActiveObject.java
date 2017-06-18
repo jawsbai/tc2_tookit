@@ -1,43 +1,56 @@
 package toolkit.thread;
 
+import com.sun.corba.se.impl.oa.poa.AOMEntry;
+import toolkit.helper.TimeHelper;
 import toolkit.lang.Action0;
 import toolkit.lang.Func0;
 import toolkit.print.Console;
-import toolkit.helper.TimeHelper;
+import toolkit.promise.Deferred;
+import toolkit.promise.Promise;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class ActiveObject extends Ticker {
-    private final static ThreadLocal<ActiveObject> _local = new ThreadLocal<>();
+    private final static ThreadLocal<ActiveObject> local = new ThreadLocal<>();
 
     public static ActiveObject current() {
-        return _local.get();
+        return local.get();
     }
 
-    public static void currentTick(Func0<Boolean> func) {
-        ActiveObject current = current();
-        if (current == null) {
-            Console.log("ActiveObject.current()==null");
-        } else {
-            current.tick(func);
-        }
+    private final LinkedList<Action0> queue = new LinkedList<>();
+    private final ArrayList<Func0<Boolean>> ticks = new ArrayList<>();
+
+    private final String name;
+    private Deferred startDefer = new Deferred();
+
+    public ActiveObject(int sleep) {
+        this(sleep, null);
     }
 
-    private final LinkedList<Action0> _queue = new LinkedList<>();
-    private final ArrayList<Func0<Boolean>> _ticks = new ArrayList<>();
+    public ActiveObject(int sleep, String name) {
+        super(sleep);
 
-    public ActiveObject(int time) {
-        super(time);
+        this.name = name;
     }
 
     private boolean inThread() {
         return current() == this;
     }
 
+    public final Promise start() {
+        startTicker();
+        return startDefer.promise();
+    }
+
+    public final void stop() {
+        stopTicker();
+    }
+
     @Override
     protected void onStart() {
-        _local.set(this);
+        local.set(this);
+        startDefer.resolve();
     }
 
     @Override
@@ -45,34 +58,34 @@ public class ActiveObject extends Ticker {
     }
 
     @Override
-    protected synchronized void onTick() {
-        while (!_queue.isEmpty()) {
-            try {
-                _queue.removeFirst().invoke();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (_ticks.size() > 0) {
-            for (int i = 0; i < _ticks.size(); i++) {
-                Func0<Boolean> tick = _ticks.get(i);
+    protected void onTick() {
+        synchronized (queue) {
+            while (!queue.isEmpty()) {
                 try {
-                    if (tick.invoke()) {
-                        _ticks.remove(tick);
-                        i--;
-                    }
+                    queue.removeFirst().invoke();
                 } catch (Exception e) {
-                    _ticks.remove(tick);
-
                     e.printStackTrace();
                 }
             }
         }
-    }
 
-    public final synchronized void enqueue(Action0 action) {
-        _queue.addLast(action);
+        synchronized (ticks) {
+            if (ticks.size() > 0) {
+                for (int i = 0; i < ticks.size(); i++) {
+                    Func0<Boolean> tick = ticks.get(i);
+                    try {
+                        if (tick.invoke()) {
+                            ticks.remove(tick);
+                            i--;
+                        }
+                    } catch (Exception e) {
+                        ticks.remove(tick);
+
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     public final void invoke(Action0 action) {
@@ -83,8 +96,16 @@ public class ActiveObject extends Ticker {
         }
     }
 
+    public final void enqueue(Action0 action) {
+        synchronized (queue) {
+            queue.addLast(action);
+        }
+    }
+
     public final void tick(Func0<Boolean> func) {
-        _ticks.add(func);
+        synchronized (ticks) {
+            ticks.add(func);
+        }
     }
 
     private class IntervalState {
@@ -119,5 +140,13 @@ public class ActiveObject extends Ticker {
             return state.cancel;
         });
         return () -> state.cancel = true;
+    }
+
+    @Override
+    public String toString() {
+        return (name != null ? "[" + name + "]" : "")
+                + getClass().getSimpleName()
+                + "@"
+                + super.toString().split("@")[1];
     }
 }

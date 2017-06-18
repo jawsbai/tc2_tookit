@@ -1,17 +1,17 @@
 package toolkit.thread;
 
 public abstract class Ticker {
-    private final int _time;
-    private final Thread _thread;
-    private boolean _running = true;
+    private final int sleep;
+    private final Thread thread;
+    private boolean running = false;
 
-    public Ticker(int time) {
-        _time = time;
-        _thread = new Thread(this::run);
+    public Ticker(int sleep) {
+        this.sleep = sleep;
+        thread = new Thread(this::run);
     }
 
-    public final int time() {
-        return _time;
+    public final int sleep() {
+        return sleep;
     }
 
     private void run() {
@@ -21,9 +21,9 @@ public abstract class Ticker {
     }
 
     private void loop() {
-        while (_running) {
+        while (running) {
             try {
-                Thread.sleep(_time);
+                Thread.sleep(sleep);
 
                 onTick();
             } catch (InterruptedException e) {
@@ -32,14 +32,17 @@ public abstract class Ticker {
         }
     }
 
-    public final void start() {
-        if (_running) {
-            _thread.start();
+    protected synchronized final void startTicker() {
+        if (!running) {
+            running = true;
+            thread.start();
         }
     }
 
-    public final void stop() {
-        _running = false;
+    protected synchronized final void stopTicker() {
+        if (running) {
+            running = false;
+        }
     }
 
     protected abstract void onStart();

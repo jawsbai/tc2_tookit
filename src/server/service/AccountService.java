@@ -1,20 +1,20 @@
 package server.service;
 
-import server.config.UserConfig;
+import server.config.json.AccountJson;
 import server.config.json.UserJson;
 import toolkit.lang.Return;
 
 import java.util.Objects;
 
 public class AccountService {
-    private final UserConfig userConfig;
+    private final AccountJson config;
 
-    public AccountService(UserConfig config) {
-        userConfig = config;
+    public AccountService(AccountJson config) {
+        this.config = config;
     }
 
     private UserJson findUserByUserName(String userName) {
-        for (UserJson user : userConfig.users) {
+        for (UserJson user : this.config.users) {
             if (Objects.equals(user.userName, userName)) {
                 return user;
             }

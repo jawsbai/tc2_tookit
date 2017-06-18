@@ -157,9 +157,9 @@ FD_SILICON.getValue(rs)
                 );
             }
             
-            public static TableDefined newTableDefined(){
+            public static TableDefined newTableDefined(String tableName){
                 return new TableDefined(
-                    new TableName("Hero"),
+                    new TableName(tableName),
                     FD_HEROID,
 FD_PLAYERID,
 FD_NICKNAME,
@@ -175,6 +175,10 @@ FD_URANIUM,
 FD_SULFUR,
 FD_SILICON
                 );
+            }
+            
+            public static TableDefined newTableDefined(){
+                return newTableDefined("Hero");
             }
             
             public EQ[] toEQS(){

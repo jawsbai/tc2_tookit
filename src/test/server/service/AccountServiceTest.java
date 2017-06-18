@@ -1,6 +1,7 @@
 package test.server.service;
 
-import server.config.UserConfig;
+import server.config.ConfigLoader;
+import server.config.json.AccountJson;
 import server.config.json.UserJson;
 import toolkit.lang.Return;
 import server.service.AccountService;
@@ -26,13 +27,11 @@ public class AccountServiceTest {
     public void after() throws Exception {
     }
 
-    /**
-     * Method: login(String userName, String password)
-     */
     @org.junit.Test
-    public void testLogin() throws Exception {
-        UserConfig userConfig = new UserConfig(TestEnv.getDataPath());
-        AccountService accountService = new AccountService(userConfig);
+    public void test() throws Exception {
+        ConfigLoader configLoader = new ConfigLoader(TestEnv.getConfigPath());
+        AccountJson accountJson = configLoader.load(AccountJson.class, "/account.json");
+        AccountService accountService = new AccountService(accountJson);
 
         Return<UserJson> rt;
 

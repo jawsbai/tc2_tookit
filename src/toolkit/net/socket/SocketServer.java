@@ -7,34 +7,34 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public abstract class SocketServer {
-    private ServerSocket _server;
-    private ActiveObject _ao;
+    private final ServerSocket server;
+    private final ActiveObject ao;
 
-    private ActiveObject[] _recvAOs;
-    private ActiveObject[] _sendAOs;
+    private final ActiveObject[] recvAOs;
+    private final ActiveObject[] sendAOs;
 
     public SocketServer(int port, int recvAOs, int sendAOs) throws IOException {
-        _server = new ServerSocket(port);
+        server = new ServerSocket(port);
 
-        _recvAOs = new ActiveObject[recvAOs];
-        _sendAOs = new ActiveObject[sendAOs];
-        for (int i = 0; i < _recvAOs.length; i++) {
-            _recvAOs[i] = new ActiveObject(1);
-            _recvAOs[i].start();
+        this.recvAOs = new ActiveObject[recvAOs];
+        this.sendAOs = new ActiveObject[sendAOs];
+        for (int i = 0; i < this.recvAOs.length; i++) {
+            this.recvAOs[i] = new ActiveObject(1);
+            this.recvAOs[i].start();
         }
-        for (int i = 0; i < _sendAOs.length; i++) {
-            _sendAOs[i] = new ActiveObject(1);
-            _sendAOs[i].start();
+        for (int i = 0; i < this.sendAOs.length; i++) {
+            this.sendAOs[i] = new ActiveObject(1);
+            this.sendAOs[i].start();
         }
 
-        _ao = new ActiveObject(1);
-        _ao.tick(this::onTick);
-        _ao.start();
+        ao = new ActiveObject(1);
+        ao.tick(this::onTick);
+        ao.start();
     }
 
     private boolean onTick() {
         try {
-            accept(_server.accept());
+            accept(server.accept());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public abstract class SocketServer {
     }
 
     private void accept(Socket socket) {
-        onAccept(socket, randomAOs(_recvAOs), randomAOs(_sendAOs));
+        onAccept(socket, randomAOs(recvAOs), randomAOs(sendAOs));
     }
 
     protected abstract void onAccept(Socket socket, ActiveObject recvAO, ActiveObject sendAO);

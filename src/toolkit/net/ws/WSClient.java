@@ -58,9 +58,9 @@ public class WSClient extends SocketClient {
     }
 
     private void onHttpRequest() {
-        if (Objects.equals(request.upgrade(), "Upgrade")
-                || Objects.equals(request.secWebSocketKey(), "")
-                || Objects.equals(request.secWebSocketKey(), "")) {
+        if (Objects.equals(request.getUpgrade(), "Upgrade")
+                || Objects.equals(request.getSecWebSocketKey(), "")
+                || Objects.equals(request.getSecWebSocketKey(), "")) {
             close();
         } else {
             frameReceiver = new FrameReceiver();
@@ -105,7 +105,7 @@ public class WSClient extends SocketClient {
     }
 
     private String responseText(HttpRequest request) {
-        byte[] sha1 = SHA1.encode(StringHelper.toBytes(request.secWebSocketKey() + GUID));
+        byte[] sha1 = SHA1.encode(StringHelper.toBytes(request.getSecWebSocketKey() + GUID));
         String accept = Base64.getEncoder().encodeToString(sha1);
         return "HTTP/1.1 101 Switching Protocols\r\n" +
                 "Upgrade: websocket\r\n" +
@@ -114,8 +114,8 @@ public class WSClient extends SocketClient {
                 "\r\n";
     }
 
-    public void sendFrame(int FIN, int opCode, byte[] bytes) {
-        send(encodeFrame(FIN, opCode, bytes));
+    public void sendFrame(int fin, int opCode, byte[] bytes) {
+        send(encodeFrame(fin, opCode, bytes));
     }
 
     private byte[] encodeFrame(int fin, int opCode, byte[] bytes) {

@@ -22,11 +22,11 @@ public class Promise<RESULT> {
 //        (current != null ? current : ao).tick(() -> {
 //            int count = promises.length;
 //            for (Promise promise : promises) {
-//                if (promise.state() != PENDING) {
+//                if (promise.getState() != PENDING) {
 //                    count--;
 //
-//                    if (promise.state() == REJECTED) {
-//                        defer.reject(promise.error());
+//                    if (promise.getState() == REJECTED) {
+//                        defer.reject(promise.getError());
 //                        return true;
 //                    }
 //                }
@@ -62,15 +62,15 @@ public class Promise<RESULT> {
         }
     }
 
-    public int state() {
+    public int getState() {
         return state;
     }
 
-    public RESULT result() {
+    public RESULT getResult() {
         return result;
     }
 
-    public Exception error() {
+    public Exception getError() {
         return error;
     }
 

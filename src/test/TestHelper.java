@@ -17,7 +17,7 @@ public class TestHelper {
     }
 
     public static void waitPromise(Promise promise) {
-        while (promise.state() == Promise.PENDING) {
+        while (promise.getState() == Promise.PENDING) {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {

@@ -3,69 +3,68 @@ package toolkit.net.ws.http;
 import java.util.HashMap;
 
 public class HttpRequest {
-    private final HashMap<String, String> _map;
+    private final HashMap<String, String> map;
 
     public final String method;
     public final String path;
     public final String version;
 
-    public HttpRequest(String method, String path, String version,
-                       HashMap<String, String> map) {
+    public HttpRequest(String method, String path, String version, HashMap<String, String> map) {
         this.method = method;
         this.path = path;
         this.version = version;
-        this._map = map;
+        this.map = map;
     }
 
     public String getValue(String key) {
-        return _map.containsKey(key) ? _map.get(key) : "";
+        return map.getOrDefault(key, "");
     }
 
-    public String host() {
+    public String getHost() {
         return getValue("Host");
     }
 
-    public String connection() {
+    public String getConnection() {
         return getValue("Connection");
     }
 
-    public String cacheControl() {
+    public String getCacheControl() {
         return getValue("Cache-Control");
     }
 
-    public String upgrade() {
+    public String getUpgrade() {
         return getValue("Upgrade");
     }
 
-    public String origin() {
+    public String getOrigin() {
         return getValue("Origin");
     }
 
-    public String userAgent() {
+    public String getUserAgent() {
         return getValue("User-Agent");
     }
 
-    public String acceptEncoding() {
+    public String getAcceptEncoding() {
         return getValue("Accept-Encoding");
     }
 
-    public String acceptLanguage() {
+    public String getAcceptLanguage() {
         return getValue("Accept-Language");
     }
 
-    public String cookie() {
+    public String getCookie() {
         return getValue("Cookie");
     }
 
-    public String secWebSocketVersion() {
+    public String getSecWebSocketVersion() {
         return getValue("Sec-WebSocket-Version");
     }
 
-    public String secWebSocketKey() {
+    public String getSecWebSocketKey() {
         return getValue("Sec-WebSocket-Key");
     }
 
-    public String secWebSocketExtensions() {
+    public String getSecWebSocketExtensions() {
         return getValue("Sec-WebSocket-Extensions");
     }
 

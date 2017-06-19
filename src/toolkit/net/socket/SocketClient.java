@@ -12,7 +12,7 @@ public abstract class SocketClient {
     private final ActiveObject recvAO;
     private final ActiveObject sendAO;
     private final int bufferLength;
-    private boolean isClosed;
+    private boolean closed;
     private boolean canReceive = false;
 
     public SocketClient(Socket socket, int bufferLength, ActiveObject recvAO, ActiveObject sendAO) {
@@ -24,22 +24,22 @@ public abstract class SocketClient {
         this.recvAO.tick(this::onTick);
     }
 
-    public final String ip() {
+    public final String getIp() {
         return socket.getInetAddress().toString();
     }
 
-    public final int port() {
+    public final int getPort() {
         return socket.getPort();
     }
 
     public final boolean isClosed() {
-        return isClosed;
+        return closed;
     }
 
     public final synchronized void close() {
-        if (!isClosed) {
+        if (!closed) {
             try {
-                isClosed = true;
+                closed = true;
                 socket.close();
                 onClosed();
             } catch (IOException ignored) {
@@ -65,7 +65,7 @@ public abstract class SocketClient {
                 close();
             }
         }
-        return isClosed;
+        return closed;
     }
 
     protected abstract void onReceive(byte[] bytes, int len);
@@ -74,7 +74,7 @@ public abstract class SocketClient {
 
     public final void send(byte[] bytes) {
         sendAO.invoke(() -> {
-            if (!isClosed) {
+            if (!closed) {
                 try {
                     OutputStream output = socket.getOutputStream();
                     output.write(bytes);

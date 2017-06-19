@@ -1,4 +1,4 @@
-package server.room;
+package server.space;
 
 import toolkit.print.Console;
 import toolkit.promise.Deferred;
@@ -6,16 +6,16 @@ import toolkit.promise.Promise;
 
 import java.util.Date;
 
-public abstract class Guest<T extends Room> {
-    public final T room;
+public class SpatialObject<T extends Space> {
+    public final T space;
     public final int queueTime;
     private long beginTime;
 
     private boolean joined = false;
     private boolean removed = false;
 
-    public Guest(T room, int queueTime) {
-        this.room = room;
+    public SpatialObject(T space, int queueTime) {
+        this.space = space;
         this.queueTime = queueTime;
     }
 
@@ -32,10 +32,10 @@ public abstract class Guest<T extends Room> {
     }
 
     //add
-    protected final Promise<Boolean> addToRoom() {
+    protected final Promise<Boolean> addToSpace() {
         Deferred<Boolean> defer = new Deferred<>();
-        room.service.invoke(() -> {
-            boolean b = room.addGuest(this);
+        space.service.invoke(() -> {
+            boolean b = space.addObject(this);
             if (b) {
                 onAdded();
             }
@@ -44,10 +44,10 @@ public abstract class Guest<T extends Room> {
         return defer.promise();
     }
 
-    protected final Promise<Boolean> removeFromRoom() {
+    protected final Promise<Boolean> removeFromSpace() {
         Deferred<Boolean> defer = new Deferred<>();
-        room.service.invoke(() -> {
-            boolean b = room.removeGuest(this);
+        space.service.invoke(() -> {
+            boolean b = space.removeObject(this);
             if (b) {
                 onRemoved();
             }
@@ -67,12 +67,12 @@ public abstract class Guest<T extends Room> {
     }
 
     protected void onJoined() {
+        joined = true;
         Console.log(getClass().getSimpleName(), "joined");
     }
 
     public void update() {
-        if (!joined && elapsedTime() > queueTime) {
-            joined = true;
+        if (!joined && elapsedTime() >= queueTime) {
             onJoined();
         }
     }

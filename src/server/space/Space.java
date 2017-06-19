@@ -1,24 +1,22 @@
-package server.room;
+package server.space;
 
-import server.service.RoomService;
+import server.service.SpaceService;
 import toolkit.print.Console;
 import toolkit.promise.Deferred;
 import toolkit.promise.Promise;
-import toolkit.thread.ActiveObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class Room<T extends Guest> {
-    public final RoomService service;
+public abstract class Space<T extends SpatialObject> {
+    public SpaceService service;
     private long beginTime = 0;
     public final long maxTime;
-
-    protected final ArrayList<T> guests = new ArrayList<>();
-
     private boolean removed = false;
 
-    public Room(RoomService service, int maxTime) {
+    protected final ArrayList<T> objects = new ArrayList<>();
+
+    public Space(SpaceService service, int maxTime) {
         this.service = service;
         this.maxTime = maxTime;
     }
@@ -27,7 +25,7 @@ public abstract class Room<T extends Guest> {
         return new Date().getTime() - beginTime;
     }
 
-    public final boolean isRemoved() {
+    public boolean isRemoved() {
         return removed;
     }
 
@@ -35,7 +33,7 @@ public abstract class Room<T extends Guest> {
     public final Promise<Boolean> addToService() {
         Deferred<Boolean> defer = new Deferred<>();
         service.invoke(() -> {
-            boolean b = service.addRoom(this);
+            boolean b = service.addSpace(this);
             if (b) {
                 onAdded();
             }
@@ -47,7 +45,7 @@ public abstract class Room<T extends Guest> {
     public final Promise<Boolean> removeFromService() {
         Deferred<Boolean> defer = new Deferred<>();
         service.invoke(() -> {
-            boolean b = service.removeRoom(this);
+            boolean b = service.removeSpace(this);
             if (b) {
                 onRemoved();
             }
@@ -63,41 +61,40 @@ public abstract class Room<T extends Guest> {
 
     protected void onRemoved() {
         removed = true;
-
+        removeAllObjects();
         Console.log(getClass().getSimpleName(), "onRemoved");
     }
 
-    private void removeGuests() {
-        for (int i = 0; i < guests.size(); i++) {
-            guests.get(i).removeFromRoom();
+    //so add remove
+    public final boolean addObject(T object) {
+        if (isRemoved() || objects.contains(object)) {
+            return false;
+        }
+        return objects.add(object);
+    }
+
+    public final boolean removeObject(T object) {
+        return objects.remove(object);
+    }
+
+    protected final void removeAllObjects() {
+        for (int i = 0; i < objects.size(); i++) {
+            objects.get(i).removeFromSpace();
             i--;
         }
     }
 
-    //guest add remove
-    protected final boolean addGuest(T guest) {
-        if (!guests.contains(guest)) {
-            guests.add(guest);
-            return true;
-        }
-        return false;
-    }
-
-    protected final boolean removeGuest(T guest) {
-        return guests.remove(guest);
-    }
-
     public void update() {
-        for (int i = 0; i < guests.size(); i++) {
-            Guest guest = guests.get(i);
-            guest.update();
-            if (guest.isRemoved()) {
+        for (int i = 0; i < objects.size(); i++) {
+            T object = objects.get(i);
+            object.update();
+            if (object.isRemoved()) {
                 i--;
             }
         }
 
-        if (elapsedTime() > maxTime) {
-            removeGuests();
+        if (maxTime > 0 && elapsedTime() > maxTime) {
+            removeAllObjects();
             removeFromService();
         }
     }

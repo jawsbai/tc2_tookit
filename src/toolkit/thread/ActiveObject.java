@@ -1,10 +1,8 @@
 package toolkit.thread;
 
-import com.sun.corba.se.impl.oa.poa.AOMEntry;
 import toolkit.helper.TimeHelper;
 import toolkit.lang.Action0;
 import toolkit.lang.Func0;
-import toolkit.print.Console;
 import toolkit.promise.Deferred;
 import toolkit.promise.Promise;
 

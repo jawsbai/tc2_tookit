@@ -1,17 +1,11 @@
 
         package rpc2j;
-        public class EndLocal {
+        public abstract class EndLocal {
             public EndLocal() {
         
             }
             
-            protected int _newMessageID() {
-                return 0;
-            }
-        
-            protected void _sendMessage(TypeWriter writer, Message message) {
-            }
-            
-            protected void _handle(TypeReader reader, Message message){
-            }
+            protected abstract int newMessageID();        
+            protected abstract void sendMessage(TypeWriter writer, Message message);            
+            protected abstract void handle(TypeReader reader, Message message);
         }

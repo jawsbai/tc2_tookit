@@ -1,6 +1,6 @@
 package test.server.table;
 
-import server.table.TableSeed;
+import server.service.database.table.TableSeed;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;

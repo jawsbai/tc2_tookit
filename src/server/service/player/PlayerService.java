@@ -1,4 +1,4 @@
-package server.service;
+package server.service.player;
 
 import toolkit.lang.Return;
 import toolkit.thread.ActiveObject;

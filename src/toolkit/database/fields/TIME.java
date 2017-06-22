@@ -2,6 +2,7 @@ package toolkit.database.fields;
 
 import toolkit.database.expr.EQ;
 import toolkit.database.fields.base.VARCHAR;
+import toolkit.helper.TimeHelper;
 import toolkit.print.Console;
 
 import java.sql.ResultSet;
@@ -18,7 +19,7 @@ public class TIME extends VARCHAR {
     }
 
     public EQ eqNow() {
-        return eq(new Date());
+        return eq(TimeHelper.now());
     }
 
     public Date getValue(ResultSet rs) {

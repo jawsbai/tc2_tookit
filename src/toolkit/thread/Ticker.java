@@ -1,5 +1,8 @@
 package toolkit.thread;
 
+import toolkit.database.fields.TIME;
+import toolkit.helper.TimeHelper;
+
 public abstract class Ticker {
     private final int sleep;
     private final Thread thread;
@@ -21,11 +24,15 @@ public abstract class Ticker {
     }
 
     private void loop() {
+        long lt = TimeHelper.nowTime();
         while (running) {
             try {
                 Thread.sleep(sleep);
 
-                onTick();
+                long now = TimeHelper.nowTime();
+                long et = now - lt;
+                lt = now;
+                onTick(et);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -49,5 +56,5 @@ public abstract class Ticker {
 
     protected abstract void onStop();
 
-    protected abstract void onTick();
+    protected abstract void onTick(long et);
 }

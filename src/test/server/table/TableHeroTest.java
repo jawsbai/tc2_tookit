@@ -3,7 +3,7 @@ package test.server.table;
 import com.alibaba.fastjson.JSON;
 import rpc2j_table.Hero;
 import toolkit.lang.Return;
-import server.table.TableHero;
+import server.service.database.table.TableHero;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;

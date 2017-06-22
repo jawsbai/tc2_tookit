@@ -1,7 +1,6 @@
-package server.service;
+package server.service.galaxy;
 
 import server.config.json.GalaxyJson;
-import server.planet.Planet;
 import toolkit.thread.ActiveObject;
 
 public class GalaxyService extends ActiveObject {
@@ -28,8 +27,8 @@ public class GalaxyService extends ActiveObject {
     }
 
     @Override
-    protected void onTick() {
-        super.onTick();
+    protected void onTick(long et) {
+        super.onTick(et);
 
         for (Planet planet : planets) {
             planet.update();

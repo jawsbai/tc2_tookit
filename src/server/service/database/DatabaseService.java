@@ -1,9 +1,9 @@
-package server.service;
+package server.service.database;
 
 import toolkit.database.Database;
 import toolkit.database.Table;
 import server.config.json.DBConfigJson;
-import server.table.*;
+import server.service.database.table.*;
 import toolkit.thread.ActiveObject;
 
 import java.lang.reflect.Field;

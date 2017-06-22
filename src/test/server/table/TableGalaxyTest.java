@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 import rpc2j_table.Galaxy;
-import server.table.TableGalaxy;
+import server.service.database.table.TableGalaxy;
 import test.TestHelper;
 import toolkit.print.Console;
 

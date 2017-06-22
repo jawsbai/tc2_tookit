@@ -1,4 +1,4 @@
-package server.space;
+package server.service.space;
 
 public class SpatialObject {
 }

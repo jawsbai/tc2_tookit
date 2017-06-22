@@ -1,4 +1,4 @@
-package server.planet;
+package server.service.galaxy;
 
 import server.config.json.FactionJson;
 

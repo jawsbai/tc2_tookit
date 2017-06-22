@@ -1,9 +1,9 @@
 package server.init;
 
-import server.service.AccountService;
-import server.service.DatabaseService;
-import server.service.GalaxyService;
-import server.service.PlayerService;
+import server.service.account.AccountService;
+import server.service.database.DatabaseService;
+import server.service.galaxy.GalaxyService;
+import server.service.player.PlayerService;
 
 public class Locator {
     private static DatabaseService databaseService;

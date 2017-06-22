@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 import rpc2j_table.Planet;
-import server.table.TablePlanet;
+import server.service.database.table.TablePlanet;
 import test.TestHelper;
 import toolkit.print.Console;
 

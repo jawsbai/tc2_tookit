@@ -2,7 +2,7 @@ package test;
 
 import server.config.ConfigLoader;
 import server.config.json.StartupJson;
-import server.service.DatabaseService;
+import server.service.database.DatabaseService;
 import toolkit.promise.Promise;
 
 public class TestHelper {

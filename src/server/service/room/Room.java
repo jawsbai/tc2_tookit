@@ -1,6 +1,6 @@
-package server.room;
+package server.service.room;
 
-import server.service.RoomService;
+import toolkit.helper.TimeHelper;
 import toolkit.print.Console;
 import toolkit.promise.Deferred;
 import toolkit.promise.Promise;
@@ -22,7 +22,7 @@ public abstract class Room<T extends RoomObject> {
     }
 
     public final long elapsedTime() {
-        return new Date().getTime() - beginTime;
+        return TimeHelper.nowTime() - beginTime;
     }
 
     public boolean isRemoved() {
@@ -35,7 +35,7 @@ public abstract class Room<T extends RoomObject> {
         service.invoke(() -> {
             boolean b = service.addRoom(this);
             if (b) {
-                beginTime = new Date().getTime();
+                beginTime = TimeHelper.nowTime();
                 onAdded();
             }
             defer.resolve(b);
@@ -48,7 +48,7 @@ public abstract class Room<T extends RoomObject> {
         service.invoke(() -> {
             boolean b = service.removeRoom(this);
             if (b) {
-                removeLodgers();
+                removeObjects();
                 removed = true;
                 onRemoved();
             }
@@ -66,28 +66,28 @@ public abstract class Room<T extends RoomObject> {
     }
 
     //so add remove
-    public final boolean addObject(T object) {
+    protected final boolean addObject(T object) {
         if (isRemoved() || objects.contains(object)) {
             return false;
         }
         return objects.add(object);
     }
 
-    public final boolean removeObject(T object) {
+    protected final boolean removeObject(T object) {
         return objects.remove(object);
     }
 
-    protected final void removeLodgers() {
+    protected final void removeObjects() {
         for (int i = 0; i < objects.size(); i++) {
             objects.get(i).removeFromRoom();
             i--;
         }
     }
 
-    public void update() {
+    public void update(long et) {
         for (int i = 0; i < objects.size(); i++) {
             T item = objects.get(i);
-            item.update();
+            item.update(et);
             if (item.isRemoved()) {
                 i--;
             }

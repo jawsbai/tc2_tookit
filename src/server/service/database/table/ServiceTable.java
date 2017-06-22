@@ -1,6 +1,6 @@
-package server.table;
+package server.service.database.table;
 
-import server.service.DatabaseService;
+import server.service.database.DatabaseService;
 import toolkit.database.Database;
 import toolkit.database.Table;
 import toolkit.database.TableDefined;

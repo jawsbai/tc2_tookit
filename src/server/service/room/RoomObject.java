@@ -1,9 +1,11 @@
-package server.room;
+package server.service.room;
 
+import toolkit.helper.TimeHelper;
 import toolkit.print.Console;
 import toolkit.promise.Deferred;
 import toolkit.promise.Promise;
 
+import java.sql.Time;
 import java.util.Date;
 
 public class RoomObject<T extends Room> {
@@ -20,7 +22,7 @@ public class RoomObject<T extends Room> {
     }
 
     public final long elapsedTime() {
-        return new Date().getTime() - beginTime;
+        return TimeHelper.nowTime() - beginTime;
     }
 
     public final boolean isJoined() {
@@ -37,7 +39,7 @@ public class RoomObject<T extends Room> {
         room.service.invoke(() -> {
             boolean b = room.addObject(this);
             if (b) {
-                beginTime = new Date().getTime();
+                beginTime = TimeHelper.nowTime();
                 onAdded();
             }
             defer.resolve(b);
@@ -71,7 +73,7 @@ public class RoomObject<T extends Room> {
         Console.log(getClass().getSimpleName(), "joined");
     }
 
-    public void update() {
+    public void update(long et) {
         if (!joined && elapsedTime() >= queueTime) {
             onJoined();
         }

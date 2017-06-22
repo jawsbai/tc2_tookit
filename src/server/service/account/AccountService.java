@@ -1,4 +1,4 @@
-package server.service;
+package server.service.account;
 
 import server.config.json.AccountJson;
 import server.config.json.UserJson;

@@ -1,10 +1,11 @@
-package server.table;
+package server.service.database.table;
 
 import rpc2j_table.Seed;
-import server.service.DatabaseService;
+import server.service.database.DatabaseService;
 import toolkit.database.expr.EQ;
 import toolkit.database.expr.ORDER_BY;
 import toolkit.database.expr.WHERE;
+import toolkit.helper.TimeHelper;
 
 import java.util.Date;
 
@@ -38,7 +39,7 @@ public class TableSeed extends ServiceTable {
                     keyEQ,
                     Seed.FD_INDEX.eq(index),
                     Seed.FD_CREATETIME.eqNow(),
-                    Seed.FD_UPDATETIME.eq(new Date()));
+                    Seed.FD_UPDATETIME.eq(TimeHelper.now()));
         } else {
             index++;
             success = update(new EQ[]{

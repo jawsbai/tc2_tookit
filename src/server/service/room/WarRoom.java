@@ -1,17 +1,15 @@
-package server.room;
+package server.service.room;
 
-import server.service.RoomService;
-
-public class BattleRoom extends Room<BattleRObject> {
-    public BattleRoom(RoomService service, int maxTime) {
+public class WarRoom extends Room<WarRObject> {
+    public WarRoom(RoomService service, int maxTime) {
         super(service, maxTime);
     }
 
-    protected final boolean addBrObject(BattleRObject brObject) {
+    protected final boolean addBrObject(WarRObject brObject) {
         return addObject(brObject);
     }
 
-    protected final boolean removeBrObject(BattleRObject brObject) {
+    protected final boolean removeBrObject(WarRObject brObject) {
         return removeObject(brObject);
     }
 

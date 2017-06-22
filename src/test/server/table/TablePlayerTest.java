@@ -1,7 +1,7 @@
 package test.server.table;
 
 import com.alibaba.fastjson.JSON;
-import server.table.TablePlayer;
+import server.service.database.table.TablePlayer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;

@@ -1,7 +1,6 @@
-package server.planet;
+package server.service.galaxy;
 
 import server.config.json.TerritoryJson;
-import toolkit.print.Console;
 
 public class Territory {
     public final Planet planet;

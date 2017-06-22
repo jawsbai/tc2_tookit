@@ -1,7 +1,7 @@
-package server.table;
+package server.service.database.table;
 
 import rpc2j_table.Galaxy;
-import server.service.DatabaseService;
+import server.service.database.DatabaseService;
 import toolkit.database.expr.ORDER_BY;
 import toolkit.database.expr.WHERE;
 

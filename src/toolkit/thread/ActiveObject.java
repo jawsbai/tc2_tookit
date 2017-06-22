@@ -56,7 +56,7 @@ public class ActiveObject extends Ticker {
     }
 
     @Override
-    protected void onTick() {
+    protected void onTick(long et) {
         synchronized (queue) {
             while (!queue.isEmpty()) {
                 try {
@@ -107,7 +107,7 @@ public class ActiveObject extends Ticker {
     }
 
     private class IntervalState {
-        long begin = TimeHelper.now();
+        long begin = TimeHelper.nowTime();
         long acc = 0;
         boolean cancel = false;
     }
@@ -115,7 +115,7 @@ public class ActiveObject extends Ticker {
     public final Action0 timeout(Action0 action, int time) {
         IntervalState state = new IntervalState();
         tick(() -> {
-            if (TimeHelper.now() - state.begin >= time) {
+            if (TimeHelper.nowTime() - state.begin >= time) {
                 action.invoke();
                 return true;
             }
@@ -127,7 +127,7 @@ public class ActiveObject extends Ticker {
     public final Action0 interval(Action0 action, int time) {
         IntervalState state = new IntervalState();
         tick(() -> {
-            long now = TimeHelper.now();
+            long now = TimeHelper.nowTime();
             long ms = now - state.begin;
             state.begin = now;
             state.acc += ms;

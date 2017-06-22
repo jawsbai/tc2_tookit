@@ -1,11 +1,11 @@
-package server.room;
+package server.service.room;
 
 import server.hero.IHero;
 
-public class BattleRObject extends RoomObject<BattleRoom> {
+public class WarRObject extends RoomObject<WarRoom> {
     private final IHero hero;
 
-    public BattleRObject(BattleRoom room, int queueTime, IHero hero) {
+    public WarRObject(WarRoom room, int queueTime, IHero hero) {
         super(room, queueTime);
 
         this.hero = hero;

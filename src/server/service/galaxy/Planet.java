@@ -1,7 +1,6 @@
-package server.planet;
+package server.service.galaxy;
 
 import server.config.json.PlanetJson;
-import server.service.GalaxyService;
 
 import java.util.Objects;
 

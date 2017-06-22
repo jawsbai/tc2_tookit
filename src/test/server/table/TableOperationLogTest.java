@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import rpc2j_table.OperationLog;
-import server.table.TableOperationLog;
+import server.service.database.table.TableOperationLog;
 import test.TestHelper;
 
 import java.util.Date;

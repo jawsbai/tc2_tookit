@@ -4,7 +4,7 @@ import server.config.ConfigLoader;
 import server.config.json.AccountJson;
 import server.config.json.UserJson;
 import toolkit.lang.Return;
-import server.service.AccountService;
+import server.service.account.AccountService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;

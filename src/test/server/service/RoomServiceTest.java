@@ -5,11 +5,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import server.hero.IHero;
-import server.service.SpaceService;
-import server.space.SpatialObject;
-import server.space.Space;
+import server.service.RoomService;
+import server.room.RoomObject;
+import server.room.Room;
 import test.TestHelper;
-import toolkit.print.Console;
 import toolkit.promise.Promise;
 
 /**
@@ -19,7 +18,7 @@ import toolkit.promise.Promise;
  * @version 1.0
  * @since <pre>���� 19, 2017</pre>
  */
-public class SpaceServiceTest {
+public class RoomServiceTest {
 
     @Before
     public void before() throws Exception {
@@ -29,19 +28,23 @@ public class SpaceServiceTest {
     public void after() throws Exception {
     }
 
-    class SpaceA extends Space {
-        public SpaceA(SpaceService service, int maxTime) {
+    class RoomA extends Room<RoomObject> {
+        public RoomA(RoomService service, int maxTime) {
             super(service, maxTime);
         }
     }
 
-    class SpaceObjectA extends SpatialObject<SpaceA> {
-        public SpaceObjectA(SpaceA space, int queueTime) {
+    class LodgerA extends RoomObject<RoomA> {
+        public LodgerA(RoomA space, int queueTime) {
             super(space, queueTime);
         }
 
-        public Promise<Boolean> addToSpaceA() {
-            return addToSpace();
+        public Promise<Boolean> addToRoomA() {
+            return addToRoom();
+        }
+
+        public Promise<Boolean> removeFromRoomA() {
+            return removeFromRoom();
         }
     }
 
@@ -66,22 +69,27 @@ public class SpaceServiceTest {
     }
 
     @Test
-    public void testSpace() throws Exception {
-        SpaceService s = new SpaceService();
+    public void testRoom() throws Exception {
+        RoomService s = new RoomService();
         s.start();
 
-        SpaceA s1 = new SpaceA(s, 1000 * 3);
-        s1.addToService();
+        RoomA r1 = new RoomA(s, 1000 * 3);
+        r1.addToRoom();
 
         Promise<Boolean> p1;
-        p1 = new SpaceObjectA(s1, 0).addToSpaceA();
-        p1 = new SpaceObjectA(s1, 0).addToSpaceA();
+        p1 = new LodgerA(r1, 0).addToRoomA();
 
-        while (!s1.isRemoved()) {
+        LodgerA g1 = new LodgerA(r1, 1000);
+        p1 = g1.addToRoomA();
+        p1.then(() -> {
+            g1.removeFromRoomA();
+        });
+
+        while (!r1.isRemoved()) {
             Thread.sleep(1);
         }
 
-        p1 = new SpaceObjectA(s1, 0).addToSpaceA();
+        p1 = new LodgerA(r1, 0).addToRoomA();
         TestHelper.waitPromise(p1);
         Assert.assertTrue(!p1.getResult());
     }
@@ -92,7 +100,7 @@ public class SpaceServiceTest {
 //        s.start();
 //
 //    WarRoom wr1 = new WarRoom(s, 1000 * 3, 2);
-//        wr1.addToService();
+//        wr1.addToRoom();
 //
 //    RoomServiceTest.HeroA hero1 = new RoomServiceTest.HeroA("hero1", 1);
 //        new WarGuest(wr1, 0, hero1).addToWarRoom();

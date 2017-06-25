@@ -14,7 +14,9 @@ public class StringHelper {
 
     public static String fromBytes(byte[] bytes) {
         try {
-            return new String(bytes, "utf-8");
+            if (bytes != null) {
+                return new String(bytes, "utf-8");
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

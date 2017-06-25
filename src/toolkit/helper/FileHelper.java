@@ -25,10 +25,12 @@ public class FileHelper {
         return StringHelper.fromBytes(read(filePath));
     }
 
-    public static <T> T readJson(String filePath, Class<T> c) {
+    public static <T> T readJson(Class<T> t, String filePath) {
         try {
             String str = FileHelper.readString(filePath);
-            return JSON.parseObject(str, c);
+            if (str != null) {
+                return JSON.parseObject(str, t);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

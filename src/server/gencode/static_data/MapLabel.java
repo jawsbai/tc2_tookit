@@ -4,13 +4,13 @@
         import java.util.ArrayList;
         public class MapLabel {
             
-            public final int type;
+            public int type;
 
-            public final int x;
+            public int x;
 
-            public final int y;
+            public int y;
 
-            public final String value;
+            public String value;
 
             public MapLabel(){
                 

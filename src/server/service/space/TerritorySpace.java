@@ -1,6 +1,9 @@
 package server.service.space;
 
-public class TerritorySpace {
-    public TerritorySpace(){
+import server.gencode.static_data.Map;
+
+public class TerritorySpace extends Space {
+    public TerritorySpace(Map map) {
+        super(map);
     }
 }

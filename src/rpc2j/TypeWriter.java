@@ -61,6 +61,8 @@
 
                 writeInt(value.height);
 
+                writeInt(value.cellSize);
+
                 writeMapLabelArray(value.labels);
             }
             public void writeMapArray(server.gencode.static_data.Map[] array){

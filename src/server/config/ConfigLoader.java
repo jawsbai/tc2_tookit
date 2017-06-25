@@ -10,7 +10,7 @@ public class ConfigLoader {
     }
 
     public <T> T load(Class<T> t, String file) throws Exception {
-        T root = FileHelper.readJson(folder + file, t);
+        T root = FileHelper.readJson(t, folder + file);
         if (root == null) {
             throw new Exception("load " + t.getSimpleName() + " error");
         }

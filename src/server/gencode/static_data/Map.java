@@ -4,13 +4,15 @@
         import java.util.ArrayList;
         public class Map {
             
-            public final String key;
+            public String key;
 
-            public final int width;
+            public int width;
 
-            public final int height;
+            public int height;
 
-            public final server.gencode.static_data.MapLabel[] labels;
+            public int cellSize;
+
+            public server.gencode.static_data.MapLabel[] labels;
 
             public Map(){
                 
@@ -20,16 +22,20 @@
 
                 this.height=0;
 
+                this.cellSize=0;
+
                 this.labels=new server.gencode.static_data.MapLabel[]{};
             }
 
-            public Map(String key, int width, int height, server.gencode.static_data.MapLabel[] labels){
+            public Map(String key, int width, int height, int cellSize, server.gencode.static_data.MapLabel[] labels){
                 
                 this.key=key;
 
                 this.width=width;
 
                 this.height=height;
+
+                this.cellSize=cellSize;
 
                 this.labels=labels;
             }

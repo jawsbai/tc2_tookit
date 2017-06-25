@@ -68,6 +68,7 @@
                 readString(),
                 readInt(),
                 readInt(),
+                readInt(),
                 readMapLabelArray()
                 );
             }

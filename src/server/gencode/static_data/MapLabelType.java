@@ -32,15 +32,13 @@
             }
             
             public static final MapLabelType FACTORY=new MapLabelType("factory", 100);
-public static final MapLabelType CAVE1=new MapLabelType("cave1", 401);
-public static final MapLabelType CAVE2=new MapLabelType("cave2", 402);
-public static final MapLabelType CAVE3=new MapLabelType("cave3", 403);
+public static final MapLabelType CAVE=new MapLabelType("cave", 200);
 public static final MapLabelType HEROBORNPOINT=new MapLabelType("heroBornPoint", 1);
 public static final MapLabelType LINK=new MapLabelType("link", 2);
 public static final MapLabelType POC=new MapLabelType("poc", 3);
             
             private static final MapLabelType[] items=new MapLabelType[]{
-                FACTORY,CAVE1,CAVE2,CAVE3,HEROBORNPOINT,LINK,POC
+                FACTORY,CAVE,HEROBORNPOINT,LINK,POC
             };
             
             public static MapLabelType[] getItems(){

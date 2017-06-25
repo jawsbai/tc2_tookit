@@ -15,9 +15,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MapGrid {
     class Label {
@@ -25,12 +23,14 @@ public class MapGrid {
         final int r;
         final int g;
         final int b;
+        final String value;
 
-        public Label(MapLabelType type, int r, int g, int b) {
+        public Label(MapLabelType type, int r, int g, int b, String value) {
             this.type = type;
             this.r = r;
             this.g = g;
             this.b = b;
+            this.value = value;
         }
     }
 
@@ -63,7 +63,7 @@ public class MapGrid {
     }
 
     private static final int SIZE = 128;
-    private static final int UNIT = 32;
+    private static final int CELL_SIZE = 32;
     private final Block[] blocks = new Block[]{
             new Block("A1", 0, 0),
             new Block("A2", 0, 1),
@@ -77,13 +77,13 @@ public class MapGrid {
 
     };
     private final Label[] labels = new Label[]{
-            new Label(MapLabelType.HEROBORNPOINT, 0, 0, 0xff),
-            new Label(MapLabelType.FACTORY, 0, 0x99, 0),
-            new Label(MapLabelType.LINK, 0xff, 0, 0xff),
-            new Label(MapLabelType.POC, 0xff, 0, 0),
-            new Label(MapLabelType.CAVE1, 0xff, 0x66, 0),
-            new Label(MapLabelType.CAVE2, 0xff, 0x99, 0),
-            new Label(MapLabelType.CAVE3, 0xff, 0xcc, 0),
+            new Label(MapLabelType.HEROBORNPOINT, 0, 0, 0xff, ""),
+            new Label(MapLabelType.FACTORY, 0, 0x99, 0, ""),
+            new Label(MapLabelType.LINK, 0xff, 0, 0xff, ""),
+            new Label(MapLabelType.POC, 0xff, 0, 0, ""),
+            new Label(MapLabelType.CAVE, 0xff, 0x66, 0, "1"),
+            new Label(MapLabelType.CAVE, 0xff, 0x99, 0, "2"),
+            new Label(MapLabelType.CAVE, 0xff, 0xcc, 0, "3"),
     };
     private final String configPath;
 
@@ -183,7 +183,7 @@ public class MapGrid {
                     continue;
                 }
 
-                String value = "";
+                String value = label.value;
 
                 if (label.type == MapLabelType.LINK) {
                     Block disBlock = findDisBlock(xx, yy, aroundBlocks);
@@ -191,12 +191,12 @@ public class MapGrid {
                 }
 
                 labels.add(new MapLabel(label.type.getInt(),
-                        x * UNIT,
-                        y * UNIT,
+                        x * CELL_SIZE,
+                        y * CELL_SIZE,
                         value));
             }
         }
-        Map map = new Map(block.key, SIZE, SIZE, MapLabel.toArray(labels));
+        Map map = new Map(block.key, SIZE, SIZE, CELL_SIZE, MapLabel.toArray(labels));
         String json = JSON.toJSONString(map);
         Console.log(json);
         FileHelper.writeString(configPath + "/maps/" + block.key + ".json", json);

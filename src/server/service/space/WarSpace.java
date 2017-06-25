@@ -1,6 +1,9 @@
 package server.service.space;
 
-public class WarSpace {
-    public WarSpace(){
+import server.gencode.static_data.Map;
+
+public class WarSpace extends Space {
+    public WarSpace(Map map) {
+        super(map);
     }
 }

@@ -33,7 +33,7 @@ public class TerritoryRoom extends Room<TerritoryRObject> {
     }
 
     @Override
-    public void update(long et) {
+    protected void update(long et) {
         super.update(et);
 
         if (factionLockTime > 0) {

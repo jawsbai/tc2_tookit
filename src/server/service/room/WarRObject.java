@@ -1,6 +1,9 @@
 package server.service.room;
 
 import server.hero.IHero;
+import toolkit.lang.Return;
+import toolkit.promise.Deferred;
+import toolkit.promise.Promise;
 
 public class WarRObject extends RoomObject<WarRoom> {
     private final IHero hero;
@@ -19,21 +22,25 @@ public class WarRObject extends RoomObject<WarRoom> {
         return hero.getFactionId();
     }
 
-    //add
-//    public Promise<Return<String>> addToWarRoom() {
-//        Deferred<Return<String>> defer = new Deferred<>();
-//        room.service.invoke(() -> {
-//            Return<String> rt = room.addWarGuest(this);
-//            if (rt.isSuccess()) {
-//                onAdded();
-//            }
-//            defer.resolve(rt);
-//        });
-//        return defer.promise();
-//    }
+    public final Promise<Return> addToWarRoom() {
+        Deferred<Return> defer = new Deferred<>();
+        room.service.invoke(() -> {
+            Return rt = new Return();
+            if (room.findWrObject(getHeroId()) != null) {
+                rt.setCode(2);
+            } else if (room.isEndBuffer()) {
+                rt.setCode(3);
+            } else if (room.getWrObjects(getFactionId()) >= room.getFactionMaxWrObjects()) {
+                rt.setCode(4);
+            } else {
+                rt.setCode(addToRoom().getResult() ? 0 : 1);
+            }
+            defer.resolve(rt);
+        });
+        return defer.promise();
+    }
 
-//    public final Promise<Boolean> removeFromWarSpace() {
-//        return removeFromRoom();
-//    }
-
+    public final Promise<Boolean> removeFromWarRoom() {
+        return removeFromRoom();
+    }
 }

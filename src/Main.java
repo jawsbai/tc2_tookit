@@ -1,4 +1,4 @@
-import rpc2j_table.Player;
+
 import server.init.Server;
 import toolkit.net.ws.WebSocket;
 import toolkit.print.Console;
@@ -14,11 +14,6 @@ public class Main {
         serverTest();
     }
 
-    public static void test() {
-        for (Field field : Player.class.getFields()) {
-            Console.log(field.getName(), field.getType());
-        }
-    }
 
     public static void serverTest() {
         try {

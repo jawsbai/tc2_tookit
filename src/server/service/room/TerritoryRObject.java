@@ -30,11 +30,11 @@ public class TerritoryRObject extends RoomObject<TerritoryRoom> {
         room.service.invoke(() -> {
             Return rt = new Return();
             if (room.findTrObject(getHeroId()) != null) {
-                rt.setCode(1);
-            } else if (room.getFactionLockTime() > 0 && getFactionId() != room.getOwnerFactionId()) {
                 rt.setCode(2);
+            } else if (room.getFactionLockTime() > 0 && getFactionId() != room.getOwnerFactionId()) {
+                rt.setCode(3);
             } else {
-                rt.setCode(addToRoom().getResult() ? 0 : 3);
+                rt.setCode(addToRoom().getResult() ? 0 : 1);
             }
             defer.resolve(rt);
         });

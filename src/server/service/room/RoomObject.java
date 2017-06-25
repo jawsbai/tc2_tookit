@@ -21,6 +21,10 @@ public class RoomObject<T extends Room> {
         this.queueTime = queueTime;
     }
 
+    public int getQueueTime() {
+        return queueTime;
+    }
+
     public final long elapsedTime() {
         return TimeHelper.nowTime() - beginTime;
     }
@@ -73,7 +77,7 @@ public class RoomObject<T extends Room> {
         Console.log(getClass().getSimpleName(), "joined");
     }
 
-    public void update(long et) {
+    protected void update(long et) {
         if (!joined && elapsedTime() >= queueTime) {
             onJoined();
         }

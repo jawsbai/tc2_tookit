@@ -84,7 +84,7 @@ public abstract class Room<T extends RoomObject> {
         }
     }
 
-    public void update(long et) {
+    protected void update(long et) {
         for (int i = 0; i < objects.size(); i++) {
             T item = objects.get(i);
             item.update(et);

@@ -1,6 +1,6 @@
 package server.service.database.table;
 
-import rpc2j_table.OperationLog;
+import server.gencode.table.OperationLog;
 import server.service.database.DatabaseService;
 import toolkit.database.expr.EQ;
 

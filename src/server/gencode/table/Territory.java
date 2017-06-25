@@ -1,23 +1,23 @@
 
-        package rpc2j_table;
+        package server.gencode.table;
         import java.sql.ResultSet;
         import toolkit.database.expr.EQ;
         import toolkit.database.fields.*;
         import toolkit.database.TableName;
         import toolkit.database.TableDefined;
         import java.util.Date;
-        public class Country {
-            public static final INTEGER FD_COUNTRYID=new INTEGER("countryid");
+        public class Territory {
+            public static final INTEGER FD_TERRID=new INTEGER("terrid");
 public static final STRING FD_NAME=new STRING("name",50);
-public static final STRING FD_CAPITAL=new STRING("capital",50);
+public static final INTEGER FD_FACTIONID=new INTEGER("factionid");
 public static final TIME FD_CREATETIME=new TIME("createtime");
             
-            private int countryId;
-            public void setCountryId(int value){
-                countryId=value;
+            private int terrId;
+            public void setTerrId(int value){
+                terrId=value;
             }
-            public int getCountryId(){
-                return countryId;
+            public int getTerrId(){
+                return terrId;
             }
 private String name;
             public void setName(String value){
@@ -26,12 +26,12 @@ private String name;
             public String getName(){
                 return name;
             }
-private String capital;
-            public void setCapital(String value){
-                capital=value;
+private int factionId;
+            public void setFactionId(int value){
+                factionId=value;
             }
-            public String getCapital(){
-                return capital;
+            public int getFactionId(){
+                return factionId;
             }
 private Date createTime;
             public void setCreateTime(Date value){
@@ -41,18 +41,18 @@ private Date createTime;
                 return createTime;
             }
             
-            public Country(int countryId, String name, String capital, Date createTime){
-                this.countryId=countryId;
+            public Territory(int terrId, String name, int factionId, Date createTime){
+                this.terrId=terrId;
 this.name=name;
-this.capital=capital;
+this.factionId=factionId;
 this.createTime=createTime;
             }
             
-            public static Country newFromRS(ResultSet rs){
-                return new Country(
-                    FD_COUNTRYID.getValue(rs),
+            public static Territory newFromRS(ResultSet rs){
+                return new Territory(
+                    FD_TERRID.getValue(rs),
 FD_NAME.getValue(rs),
-FD_CAPITAL.getValue(rs),
+FD_FACTIONID.getValue(rs),
 FD_CREATETIME.getValue(rs)
                 );
             }
@@ -60,26 +60,26 @@ FD_CREATETIME.getValue(rs)
             public static TableDefined newTableDefined(String tableName){
                 return new TableDefined(
                     new TableName(tableName),
-                    FD_COUNTRYID,
+                    FD_TERRID,
 FD_NAME,
-FD_CAPITAL,
+FD_FACTIONID,
 FD_CREATETIME
                 );
             }
             
             public static TableDefined newTableDefined(){
-                return newTableDefined("Country");
+                return newTableDefined("Territory");
             }
             
             public EQ[] toEQS(){
                 return toEQS(this);
             }
             
-            public static EQ[] toEQS(Country table){
+            public static EQ[] toEQS(Territory table){
                 EQ[] eqs=new EQ[4];
-                eqs[0]=FD_COUNTRYID.eq(table.countryId);
+                eqs[0]=FD_TERRID.eq(table.terrId);
 eqs[1]=FD_NAME.eq(table.name);
-eqs[2]=FD_CAPITAL.eq(table.capital);
+eqs[2]=FD_FACTIONID.eq(table.factionId);
 eqs[3]=FD_CREATETIME.eq(table.createTime);
                 return eqs;
             }

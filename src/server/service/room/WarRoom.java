@@ -1,47 +1,62 @@
 package server.service.room;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class WarRoom extends Room<WarRObject> {
-    public WarRoom(RoomService service, int maxTime) {
+    private int endBufferTime;
+    private final int defenseFactionId;
+    private final int factionMaxWrObjects;
+
+    public WarRoom(RoomService service, int maxTime,
+                   int endBufferTime,
+                   int defenseFactionId,
+                   int factionMaxWrObjects) {
         super(service, maxTime);
+
+        this.endBufferTime = endBufferTime;
+        this.defenseFactionId = defenseFactionId;
+        this.factionMaxWrObjects = factionMaxWrObjects;
     }
 
-    protected final boolean addBrObject(WarRObject brObject) {
-        return addObject(brObject);
+    public int getDefenseFactionId() {
+        return defenseFactionId;
     }
 
-    protected final boolean removeBrObject(WarRObject brObject) {
-        return removeObject(brObject);
+    public int getFactionMaxWrObjects() {
+        return factionMaxWrObjects;
     }
 
-//    private WarSpaceObject findWarGuestByHeroId(String heroId) {
-//        for (WarSpaceObject obj : objects) {
-//            if (Objects.equals(obj.getHeroId(), heroId)) {
-//                return obj;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    private int getFactionWarGuests(int factionId) {
-//        int count = 0;
-//        for (WarSpaceObject obj : objects) {
-//            if (obj.getFactionId() == factionId) {
-//                count++;
-//            }
-//        }
-//        return count;
-//    }
+    public boolean isEndBuffer() {
+        return maxTime - elapsedTime() <= endBufferTime;
+    }
 
-//    //guest add remove
-//    public final Return<String> addWarSpaceObject(WarSpaceObject warSpaceObject) {
-//        Return<String> rt = new Return<>();
-//        if (findWarGuestByHeroId(guest.getHeroId()) != null) {
-//            rt.setCode(1);
-//        } else if (getFactionWarGuests(guest.getFactionId()) >= factionMaxGuests) {
-//            rt.setCode(2);
-//        } else {
-//            addObject(guest);
-//        }
-//        return rt;
-//    }
+    protected WarRObject findWrObject(String heroId) {
+        for (WarRObject object : objects) {
+            if (Objects.equals(object.getHeroId(), heroId)) {
+                return object;
+            }
+        }
+        return null;
+    }
+
+    protected ArrayList<WarRObject> findWrObjects(int factionId) {
+        ArrayList<WarRObject> list = new ArrayList<>();
+        for (WarRObject obj : objects) {
+            if (obj.getFactionId() == factionId) {
+                list.add(obj);
+            }
+        }
+        return list;
+    }
+
+    protected int getWrObjects(int factionId) {
+        int count = 0;
+        for (WarRObject obj : objects) {
+            if (obj.getFactionId() == factionId) {
+                count++;
+            }
+        }
+        return count;
+    }
 }

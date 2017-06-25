@@ -62,4 +62,39 @@
             }
             
             
+            public server.gencode.static_data.Map readMap(){
+                return new server.gencode.static_data.Map(
+                
+                readString(),
+                readInt(),
+                readInt(),
+                readMapLabelArray()
+                );
+            }
+            public server.gencode.static_data.Map[] readMapArray(){
+                int length=readInt();
+                server.gencode.static_data.Map[] array=new server.gencode.static_data.Map[length];
+                for(int i=0;i<length;i++){
+                    array[i]=readMap();
+                }
+                return array;
+            }
+
+            public server.gencode.static_data.MapLabel readMapLabel(){
+                return new server.gencode.static_data.MapLabel(
+                
+                readInt(),
+                readInt(),
+                readInt(),
+                readString()
+                );
+            }
+            public server.gencode.static_data.MapLabel[] readMapLabelArray(){
+                int length=readInt();
+                server.gencode.static_data.MapLabel[] array=new server.gencode.static_data.MapLabel[length];
+                for(int i=0;i<length;i++){
+                    array[i]=readMapLabel();
+                }
+                return array;
+            }
         }

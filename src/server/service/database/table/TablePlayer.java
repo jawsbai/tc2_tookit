@@ -1,6 +1,6 @@
 package server.service.database.table;
 
-import rpc2j_table.Player;
+import server.gencode.table.Player;
 import server.service.database.DatabaseService;
 import toolkit.database.expr.ORDER_BY;
 import toolkit.database.expr.WHERE;

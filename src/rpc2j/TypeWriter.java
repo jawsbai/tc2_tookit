@@ -53,4 +53,39 @@
             }
             
             
+            public void writeMap(server.gencode.static_data.Map value){
+                
+                writeString(value.key);
+
+                writeInt(value.width);
+
+                writeInt(value.height);
+
+                writeMapLabelArray(value.labels);
+            }
+            public void writeMapArray(server.gencode.static_data.Map[] array){
+                int length=array.length;
+                writeInt(length);
+                for(int i=0;i<length;i++){
+                    writeMap(array[i]);
+                }                
+            }
+
+            public void writeMapLabel(server.gencode.static_data.MapLabel value){
+                
+                writeInt(value.type);
+
+                writeInt(value.x);
+
+                writeInt(value.y);
+
+                writeString(value.value);
+            }
+            public void writeMapLabelArray(server.gencode.static_data.MapLabel[] array){
+                int length=array.length;
+                writeInt(length);
+                for(int i=0;i<length;i++){
+                    writeMapLabel(array[i]);
+                }                
+            }
         }

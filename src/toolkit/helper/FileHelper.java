@@ -2,14 +2,11 @@ package toolkit.helper;
 
 import com.alibaba.fastjson.JSON;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class FileHelper {
     public static byte[] read(String filePath) {
-        InputStream in = null;
+        FileInputStream in = null;
         try {
             File file = new File(filePath);
             in = new FileInputStream(file);
@@ -36,5 +33,24 @@ public class FileHelper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean write(String filePath, byte[] data) {
+        FileOutputStream out = null;
+        try {
+            File file = new File(filePath);
+            out = new FileOutputStream(file);
+            out.write(data);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            AutoCloseableHelper.close(out);
+        }
+        return false;
+    }
+
+    public static boolean writeString(String filePath, String content) {
+        return write(filePath, StringHelper.toBytes(content));
     }
 }

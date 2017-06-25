@@ -22,7 +22,3 @@ public class Territory {
     public void update() {
     }
 }
-
-//A1 B1 C1
-//A2 B2 C2
-//A3 B3 C3

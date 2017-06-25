@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import rpc2j_table.OperationLog;
+import server.gencode.table.OperationLog;
 import server.service.database.table.TableOperationLog;
 import test.TestHelper;
 

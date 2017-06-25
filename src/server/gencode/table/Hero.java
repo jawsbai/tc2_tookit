@@ -1,5 +1,5 @@
 
-        package rpc2j_table;
+        package server.gencode.table;
         import java.sql.ResultSet;
         import toolkit.database.expr.EQ;
         import toolkit.database.fields.*;

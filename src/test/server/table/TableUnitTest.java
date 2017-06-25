@@ -1,7 +1,7 @@
 package test.server.table;
 
 import com.alibaba.fastjson.JSON;
-import rpc2j_table.Unit;
+import server.gencode.table.Unit;
 import server.service.database.table.TableUnit;
 import org.junit.Assert;
 import org.junit.Test;

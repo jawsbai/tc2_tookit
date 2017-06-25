@@ -1,7 +1,7 @@
 package test.server.table;
 
 import com.alibaba.fastjson.JSON;
-import rpc2j_table.Hero;
+import server.gencode.table.Hero;
 import toolkit.lang.Return;
 import server.service.database.table.TableHero;
 import org.junit.Assert;

@@ -74,23 +74,23 @@ public class RoomServiceTest {
         RoomService s = new RoomService();
         s.start();
 
-        RoomA r1 = new RoomA(s, 1000 * 3);
-        r1.addToRoom();
+        RoomA room = new RoomA(s, 1000 * 3);
+        room.addToRoom();
 
         Promise<Boolean> p1;
-        p1 = new RoomObjectA(r1, 0).addToRoomA();
+        p1 = new RoomObjectA(room, 0).addToRoomA();
 
-        RoomObjectA ro1 = new RoomObjectA(r1, 1000);
+        RoomObjectA ro1 = new RoomObjectA(room, 1000);
         p1 = ro1.addToRoomA();
         p1.then(() -> {
             ro1.removeFromRoomA();
         });
 
-        while (!r1.isRemoved()) {
+        while (!room.isRemoved()) {
             Thread.sleep(1);
         }
 
-        p1 = new RoomObjectA(r1, 0).addToRoomA();
+        p1 = new RoomObjectA(room, 0).addToRoomA();
         TestHelper.waitPromise(p1);
         Assert.assertTrue(!p1.getResult());
     }
@@ -100,40 +100,89 @@ public class RoomServiceTest {
         RoomService s = new RoomService();
         s.start();
 
-        TerritoryRoom pr1 = new TerritoryRoom(s,
+        TerritoryRoom room = new TerritoryRoom(s,
                 1000 * 3,
                 1,
                 100);
-        pr1.addToRoom();
+        room.addToRoom();
 
 
         Promise<Return> promise;
 
         HeroA hero1 = new HeroA("hero1", 2);
-        promise = new TerritoryRObject(pr1, 0, hero1).addToTerritoryRoom();
+        promise = new TerritoryRObject(room, 0, hero1).addToTerritoryRoom();
         TestHelper.waitPromise(promise);
         Assert.assertTrue(promise.getResult().isError());
 
         hero1 = new HeroA("hero1", 1);
-        promise = new TerritoryRObject(pr1, 0, hero1).addToTerritoryRoom();
+        promise = new TerritoryRObject(room, 0, hero1).addToTerritoryRoom();
         TestHelper.waitPromise(promise);
         Assert.assertTrue(promise.getResult().isSuccess());
 
         hero1 = new HeroA("hero1", 1);
-        promise = new TerritoryRObject(pr1, 0, hero1).addToTerritoryRoom();
+        promise = new TerritoryRObject(room, 0, hero1).addToTerritoryRoom();
         TestHelper.waitPromise(promise);
         Assert.assertTrue(promise.getResult().isError());
 
-        while (pr1.getFactionLockTime() > 0) {
+        while (room.getFactionLockTime() > 0) {
             Thread.sleep(1);
         }
 
         hero1 = new HeroA("hero2", 2);
-        promise = new TerritoryRObject(pr1, 0, hero1).addToTerritoryRoom();
+        promise = new TerritoryRObject(room, 0, hero1).addToTerritoryRoom();
         TestHelper.waitPromise(promise);
         Assert.assertTrue(promise.getResult().isSuccess());
 
-        while (!pr1.isRemoved()) {
+        while (!room.isRemoved()) {
+            Thread.sleep(1);
+        }
+    }
+
+    @Test
+    public void testWarRoom() throws Exception {
+        RoomService s = new RoomService();
+        s.start();
+
+        WarRoom room = new WarRoom(s,
+                1000 * 3,
+                1000,
+                1,
+                2);
+        room.addToRoom();
+
+        Promise<Return> promise;
+
+        HeroA hero1 = new HeroA("hero1", 1);
+        promise = new WarRObject(room, 0, hero1).addToWarRoom();
+        TestHelper.waitPromise(promise);
+        Assert.assertTrue(promise.getResult().isSuccess());
+
+        hero1 = new HeroA("hero1", 1);
+        promise = new WarRObject(room, 0, hero1).addToWarRoom();
+        TestHelper.waitPromise(promise);
+        Assert.assertTrue(promise.getResult().isError());
+
+        HeroA hero2 = new HeroA("hero2", 1);
+        promise = new WarRObject(room, 0, hero2).addToWarRoom();
+        TestHelper.waitPromise(promise);
+        Assert.assertTrue(promise.getResult().isSuccess());
+
+        HeroA hero3 = new HeroA("hero3", 1);
+        promise = new WarRObject(room, 0, hero3).addToWarRoom();
+        TestHelper.waitPromise(promise);
+        Assert.assertTrue(promise.getResult().isError());
+
+        Thread.sleep(2000);
+
+        Console.log(room.isEndBuffer(), room.elapsedTime());
+
+        HeroA hero4 = new HeroA("hero4", 1);
+        promise = new WarRObject(room, 0, hero4).addToWarRoom();
+        TestHelper.waitPromise(promise);
+        Assert.assertTrue(promise.getResult().isError());
+
+
+        while (!room.isRemoved()) {
             Thread.sleep(1);
         }
     }

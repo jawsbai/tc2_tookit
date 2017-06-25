@@ -1,13 +1,11 @@
 package server.service.database.table;
 
-import rpc2j_table.Seed;
+import server.gencode.table.Seed;
 import server.service.database.DatabaseService;
 import toolkit.database.expr.EQ;
 import toolkit.database.expr.ORDER_BY;
 import toolkit.database.expr.WHERE;
 import toolkit.helper.TimeHelper;
-
-import java.util.Date;
 
 public class TableSeed extends ServiceTable {
     private final String prefix;

@@ -1,6 +1,6 @@
 package server.service.database.table;
 
-import rpc2j_table.Galaxy;
+import server.gencode.table.Galaxy;
 import server.service.database.DatabaseService;
 import toolkit.database.expr.ORDER_BY;
 import toolkit.database.expr.WHERE;
@@ -10,9 +10,9 @@ public class TableGalaxy extends ServiceTable {
         super(service, Galaxy.newTableDefined());
     }
 
-    public Galaxy findGalaxy(int id) {
+    public Galaxy findGalaxy(int galaxyId) {
         final Galaxy[] galaxy = new Galaxy[1];
-        select(new WHERE(Galaxy.FD_GALAXYID.eq(id)), new ORDER_BY(), 1, rs -> {
+        select(new WHERE(Galaxy.FD_GALAXYID.eq(galaxyId)), new ORDER_BY(), 1, rs -> {
             galaxy[0] = Galaxy.newFromRS(rs);
         });
         return galaxy[0];

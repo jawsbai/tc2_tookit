@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import rpc2j_table.Territory;
+import server.gencode.table.Territory;
 import server.service.database.table.TableTerritory;
 import test.TestHelper;
 import toolkit.print.Console;
